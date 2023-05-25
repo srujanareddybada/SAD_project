@@ -7,8 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('backend:server');
 var http = require('http');
-const {connectToMongoDB, getDB} = require("@/mongodbSportsData");
-
 /**
  * Get port from environment and store in Express.
  */
@@ -89,14 +87,3 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-// Mongo connection -- To connect sports data database
-let mongodb;
-connectToMongoDB((err) => {
-    if (!err) {
-        console.log("MongoDB connection to Sports data DB is success");
-        mongodb = getDB();
-    } else {
-        console.log("MongoDB connection to Sports data DB is unsucessfull");
-    }
-})

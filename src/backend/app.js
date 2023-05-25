@@ -3,9 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const {connectToMongoDB, getDB} = require("./Config/DatabaseConfig");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./api/routes/index');
+var usersRouter = require('./api/routes/users');
 
 var app = express();
 
@@ -38,8 +39,18 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+// Mongo connection -- To connect sports data database
+let mongodb;
+connectToMongoDB((err) => {
+    if (!err) {
+        console.log("MongoDB connection to Sports data DB is success");
+        mongodb = getDB();
+    } else {
+        console.log("MongoDB connection to Sports data DB is unsucessfull");
+    }
+})
 
+module.exports = app;
 
 
 app.get("/api/getupcomingmatchlist", (req,res)=>{
