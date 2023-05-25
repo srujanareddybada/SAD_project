@@ -39,3 +39,16 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+
+
+app.get("/api/getupcomingmatchlist", (req,res)=>{
+  mongodb.collection('Upcoming_Matches_10_Days')
+  .find({}).toArray()
+  .then((wholeUpcomingMatchList) =>{
+      res.status(200).json(wholeUpcomingMatchList)
+  })
+  .catch(()=>{
+      res.status(500).json({error:'Could not fetch searched city weather data from weather collection'})
+  })
+})
