@@ -3,10 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const {connectToMongoDB, getDB} = require("./Config/DatabaseConfig");
+const {connectToMongoDB, getDB} = require("./config/db_connections/MongoDBConfig");
 
 var indexRouter = require('./api/routes/index');
 var usersRouter = require('./api/routes/users');
+var betsRouter = require('./api/routes/bets');
 
 var app = express();
 
@@ -14,14 +15,17 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/bets', betsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,26 +44,17 @@ app.use(function(err, req, res, next) {
 });
 
 // Mongo connection -- To connect sports data database
-let mongodb;
+var mongodb;
 connectToMongoDB((err) => {
     if (!err) {
         console.log("MongoDB connection to Sports data DB is success");
         mongodb = getDB();
+        app.set('mongodb', mongodb);
     } else {
         console.log("MongoDB connection to Sports data DB is unsucessfull");
     }
 })
 
+
+
 module.exports = app;
-
-
-app.get("/api/getupcomingmatchlist", (req,res)=>{
-  mongodb.collection('Upcoming_Matches_10_Days')
-  .find({}).toArray()
-  .then((wholeUpcomingMatchList) =>{
-      res.status(200).json(wholeUpcomingMatchList)
-  })
-  .catch(()=>{
-      res.status(500).json({error:'Could not fetch searched city weather data from weather collection'})
-  })
-})
