@@ -1,4 +1,3 @@
-
 const Allbets = async (db) => {
     let todayDate = new Date().toISOString().split('T')[0];
     return await db.collection('Upcoming_Matches_10_Days')
@@ -6,6 +5,6 @@ const Allbets = async (db) => {
 }
 
 services = {
-    Allbets
-}
-module.exports = services
+  Allbets,
+};
+module.exports = services;
