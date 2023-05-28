@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const specs = require('./config/api_documentation/swagger');
 const swaggerUi = require('swagger-ui-express');
+const connectToAzureSQLDB = require('./config/db_connections/azureSqlDBConfig');
 
 const {
   connectToMongoDB,
@@ -65,3 +66,5 @@ connectToMongoDB((err) => {
 });
 
 module.exports = app;
+
+connectToAzureSQLDB();
