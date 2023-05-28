@@ -88,7 +88,7 @@
                 return this.$router.push({
                     name: 'signUpPage',
                     //This is because, params property doesn't support custom types written in ts.
-                    params:{countryList: this.countryDetailsArray.map(country => country.countryName) as string[]}
+                    //params:{countryList: this.countryDetailsArray.map(country => country.countryName) as string[]}
                 })
             },
             loginBtn() {
