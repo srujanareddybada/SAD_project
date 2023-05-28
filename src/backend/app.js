@@ -3,6 +3,9 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const specs = require('./config/api_documentation/swagger');
+const swaggerUi = require('swagger-ui-express');
+
 const {
   connectToMongoDB,
   getDB,
@@ -11,7 +14,6 @@ const {
 var indexRouter = require("./api/routes/index");
 var usersRouter = require("./api/routes/users");
 var betsRouter = require("./api/routes/bets");
-var loginRouter = require("./api/routes/login");
 
 var app = express();
 
@@ -26,11 +28,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Swagger documentation middleware
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 // Routers
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api/bets", betsRouter);
-app.use("/api/login", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
