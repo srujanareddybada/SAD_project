@@ -9,7 +9,7 @@ const options = {
       description: 'API documentation for your Express application for Betting',
     },
   },
-  apis: ["../../api/routes/*.js"], // Specify the path to your API routes
+  apis: ['./api/routes/bets.js'], // Specify the path to your API routes
 };
 
 const specs = swaggerJsdoc(options);
