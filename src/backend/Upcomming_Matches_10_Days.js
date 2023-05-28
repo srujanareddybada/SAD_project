@@ -31,6 +31,12 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Function to generate decimal odds
+function generateDecimalOdds() {
+  const decimalOdds = getRandomNumber(1, 100) / 100; // Generate a random number between 1 and 100 and divide by 100
+  return decimalOdds.toFixed(2); // Round the decimal odds to two decimal places
+}
+
 // Function to fetch and store upcoming matches with status as "timed" within date range
 async function UpcomingMatches10Days(mongodb) {
   try {
@@ -57,10 +63,10 @@ async function UpcomingMatches10Days(mongodb) {
     // Filter the fetched matches based on status as "timed"
     const matches = response.data.matches.filter(match => match.status === 'TIMED');
 
-    // Generate and assign random winning odds for each match
+    // Generate and assign decimal odds for each match
     const matchesWithOdds = matches.map(match => {
-      const homeTeamWinningOdds = getRandomNumber(1, 100);
-      const awayTeamWinningOdds = 100 - homeTeamWinningOdds;
+      const homeTeamWinningOdds = generateDecimalOdds();
+      const awayTeamWinningOdds = generateDecimalOdds();
       match.HomeTeam_WinningOdds = homeTeamWinningOdds;
       match.AwayTeam_WinningOdds = awayTeamWinningOdds;
       return match;
