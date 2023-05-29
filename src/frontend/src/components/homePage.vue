@@ -54,8 +54,8 @@
                                     <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                 </div>
                                 <div class="bg-gray-200 p-2 font-semibold">Winning Odds</div>
-                                <div class="bg-gray-200 p-2">{{ matchDetail.homeTeamWinningOdds }}%</div>
-                                <div class="bg-gray-200 p-2">{{ matchDetail.awayTeamWinningOdds }}%</div>
+                                <div class="bg-gray-200 p-2">{{ matchDetail.homeTeamWinningOdds }}</div>
+                                <div class="bg-gray-200 p-2">{{ matchDetail.awayTeamWinningOdds }}</div>
                             </div>
                         </div>
                     </div>
@@ -74,17 +74,21 @@
     import axios from 'axios';
     import countryDetails from '../types/countryDetails'
     import matchDetails from '../types/matchDetails'
-    
+    import { useStore } from 'vuex';
+
     export default defineComponent({
         name: 'homeComp',
         data() {
             return {
                 countryDetailsArray: [] as countryDetails[],
-                matchDetailsArray: [] as matchDetails[]
+                matchDetailsArray: [] as matchDetails[],
+                store: useStore()
             }
         },
         methods: {
             signUpBtn() {
+                this.storeCountryData(this.countryDetailsArray);
+                this.storeMatchDetails(this.matchDetailsArray);
                 return this.$router.push({
                     name: 'signUpPage',
                     //This is because, params property doesn't support custom types written in ts.
@@ -92,6 +96,8 @@
                 })
             },
             loginBtn() {
+                this.storeCountryData(this.countryDetailsArray);
+                this.storeMatchDetails(this.matchDetailsArray);
                 return this.$router.push({
                     name: 'loginPage'
                 })
@@ -145,10 +151,17 @@
             },
             getLiveMatchList() {
                 console.log("No live match data yet");
+            },
+            storeCountryData(arr:countryDetails[]){
+                this.store.dispatch('storeCountryData', arr)
+            },
+            storeMatchDetails(arr:matchDetails[]){
+                this.store.dispatch('storeMatchDetails',arr)
             }
         },
         mounted() {
             this.getUpcomingMatchList();
+            
         }
     })
     </script>

@@ -13,8 +13,8 @@
             </div>
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-2" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
-                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" >Home</button></li>
-                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" >Current Bets</button></li>
+                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="landingPage()" >Home</button></li>
+                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="currentBetsPage()" >Current Bets</button></li>
                     <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" >Betting History</button></li>
                     <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" >Name</button></li>
                     <li>
@@ -42,6 +42,12 @@ export default defineComponent({
     methods:{
         backToHomePage(){
             return this.$router.push({name:'homePage'})
+        },
+        currentBetsPage(){
+            return this.$router.push({name:'currentBetsPage'})
+        },
+        landingPage(){
+            return this.$router.push({name:'landingPage'})
         }
     }
 })

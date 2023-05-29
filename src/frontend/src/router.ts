@@ -4,6 +4,7 @@ import signUpComp from './components/signUpPage.vue'
 import loginComp from './components/loginPage.vue'
 import landingComp from './components/landingPage.vue'
 import adminComp from './components/adminPage.vue'
+import currentBetsComp from './components/currentBets.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
         name:'adminPage',
         path:'/adminpage',
         component: adminComp
+    },
+    {
+        name: 'currentBetsPage',
+        path:'/currentbets',
+        component: currentBetsComp
     }
 ];
 
