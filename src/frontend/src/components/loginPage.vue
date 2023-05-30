@@ -13,7 +13,7 @@
             </p>
             <br /><br />
             <p class="block w-1/2 p-2.5 text-sm font-light text-gray-500 dark:text-gray-400">--Or login with--</p>
-            <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Log in with Google</button><br />
+            <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" v-on:click="oAuthGoogle()">Log in with Google</button><br />
             <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Log in with Facebook</button>
         </div>
     </div>
@@ -67,6 +67,19 @@ export default defineComponent({
                 .catch(()=>{
                     console.log("Server issue. Please try later");
                 })
+        },
+        async oAuthGoogle(){
+             await axios.get("/api/auth/google")
+             .then((res)=>{
+                if(res.status == 200){
+                    this.$router.push({name:'landingPage'})
+                }else{
+                    alert('Unsuccesfull')
+                }
+             })
+             .catch(()=>{
+                alert('Server issue')
+             })
         },
         signUpPage() {
             return this.$router.push({
