@@ -3,9 +3,9 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const specs = require('./config/api_documentation/swagger');
-const swaggerUi = require('swagger-ui-express');
-const connectToAzureSQLDB = require('./config/db_connections/azureSqlDBConfig');
+const specs = require("./config/api_documentation/swagger");
+const swaggerUi = require("swagger-ui-express");
+const connectToAzureSQLDB = require("./config/db_connections/azureSqlDBConfig");
 
 const {
   connectToMongoDB,
@@ -13,7 +13,7 @@ const {
 } = require("./config/db_connections/MongoDBConfig");
 
 var indexRouter = require("./api/routes/index");
-var usersRouter = require("./api/routes/users");
+var usersRouter = require("./api/routes/user");
 var betsRouter = require("./api/routes/bets");
 
 var app = express();
@@ -30,12 +30,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Swagger documentation middleware
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routers
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api/bets", betsRouter);
+app.use("/api/user", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -65,6 +66,6 @@ connectToMongoDB((err) => {
   }
 });
 
-module.exports = app;
-
 connectToAzureSQLDB();
+
+module.exports = app;
