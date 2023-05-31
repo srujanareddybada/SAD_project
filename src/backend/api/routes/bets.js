@@ -10,6 +10,8 @@ var router = express.Router();
  *     responses:
  *       200:
  *         description: A list of bets
+ *       400:
+ *         description: Events cannot be retreived!
  */
 router.get("/", controller.getAllBets);
 
