@@ -10,7 +10,9 @@ const connectToAzureSQLDB = require("./config/db_connections/azureSqlDBConfig");
 const {
   connectToMongoDB,
   getDB,
+  connectToMongoose,
 } = require("./config/db_connections/MongoDBConfig");
+
 
 var indexRouter = require("./api/routes/index");
 var usersRouter = require("./api/routes/user");
@@ -34,7 +36,6 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routers
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/api/bets", betsRouter);
 app.use("/api/user", usersRouter);
 
@@ -64,6 +65,28 @@ connectToMongoDB((err) => {
   } else {
     console.log("MongoDB connection to Sports data DB is unsucessfull");
   }
+});
+
+
+//Mongoose
+const mongoose = require('mongoose');
+
+var express = require("express");
+PORT = 3000;
+const port = process.env.PORT;
+
+// MongoDB Atlas
+const MONGO_URI = `mongodb+srv://Bittukun:Undertaker%4019952402@cluster0.xlhhapk.mongodb.net/?retryWrites=true&w=majority`;
+
+//connect to db with mongoose
+mongoose.connect(MONGO_URI)
+.then(() => {
+    //Listen for requests
+    //app.listen(port, () => console.log(`Conntected to DB & Server running on port ${port}`));
+    console.log('Connected to Mongoose for new user sign in ');
+    })
+.catch((error) => {
+    console.log(error)
 });
 
 connectToAzureSQLDB();
