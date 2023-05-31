@@ -5,6 +5,15 @@ var controller = require("../controllers/userBetsController");
 var express = require("express");
 var router = express.Router();
 
+//controller functions are imported
+const {
+  createUser
+} = require('../controllers/userController')
+
+router.put('/', createUser)
+
+
+
 /**
  * @swagger
  * /api/user/{id}/bets:
