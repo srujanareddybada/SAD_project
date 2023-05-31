@@ -5,8 +5,9 @@
     <div class="w-full">
         <div class="form-center">
             <p class="text-2xl text-blue-500 w-1/2 p-2.5 ml-10">Create your account</p>
-            <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter first name" v-model="firstName" />
-            <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter last name" v-model="lastName" />
+            <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter user name" v-model="userName" />
+            <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter full name" v-model="fullName" />
+            <input type="date" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" v-model="dateOfBirth" required/>
             <input type="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter email" v-model="email" />
             <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="enter password" v-model="password" />
             <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-1/2 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="re-enter password" v-model="reenterpassword" />
@@ -17,7 +18,7 @@
             </p>
             <p class="block w-1/2 p-2.5 text-sm font-light text-gray-500 dark:text-gray-400">--Or login with--</p>
             <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Log in with Google</button><br />
-            <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Log in with Facebook</button>
+            <button type="button" class="block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center" v-on:click="check()">Log in with Facebook</button>
         </div>
     </div>
 </div>
@@ -36,11 +37,12 @@ export default defineComponent({
     name: 'signUpComp',
     data() {
         return {
-            firstName: ''as string,
-            lastName: ''as string,
+            fullName: ''as string,
+            userName: ''as string,
             email: ''as string,
             password: ''as string,
-            reenterpassword: ''as string
+            reenterpassword: ''as string,
+            dateOfBirth: null as Date | null | string
         }
     },
     methods: {
@@ -53,10 +55,11 @@ export default defineComponent({
                 if (this.password === this.reenterpassword) {  
                     let hashPassword = await bcrpyt.hash(this.password, 10);
                     await axios.post("/api/signup", {
-                            firstName: this.firstName,
-                            lastName: this.lastName,
+                            fullname: this.fullName,
+                            username: this.userName,
                             email: this.email,
-                            password: hashPassword
+                            password: hashPassword,
+                            dob: this.dateOfBirth
                         })
                         .then((res) => {
                             if (res.data.acknowledged) {
@@ -93,11 +96,15 @@ export default defineComponent({
             })
         },
         clearInputs() {
-            this.firstName = '',
-                this.lastName = '',
+            this.fullName = '',
+                this.userName = '',
                 this.email = '',
                 this.password = '',
-                this.reenterpassword = ''
+                this.reenterpassword = '',
+                this.dateOfBirth = ''
+        },
+        check(){
+            alert(this.dateOfBirth +" " + typeof this.dateOfBirth)
         }
     }
 })
