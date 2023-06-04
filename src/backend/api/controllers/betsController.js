@@ -3,8 +3,6 @@ var services = require("../services/betsService");
 
 var router = express.Router();
 
-let mongodb;
-
 const getAllBets = async (req, res, next) => {
   mongodb = req.app.get("mongodb");
   try {
@@ -15,7 +13,7 @@ const getAllBets = async (req, res, next) => {
     console.log(err);
     res.status(500).json({
       error:
-        "Could not fetch searched ongoing events data from weather collection",
+        "Could not fetch searched ongoing events data from matches collection",
     });
   }
 };
