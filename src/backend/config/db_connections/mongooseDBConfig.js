@@ -1,24 +1,17 @@
-
-require('dotenv').config();
-
-//Mongoose
-const mongoose = require('mongoose');
-
-var express = require("express");
-const app = express();
-PORT = 3000;
-const port = process.env.PORT;
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 // MongoDB Atlas
-const MONGO_URI = `mongodb+srv://Bittukun:Undertaker%4019952402@cluster0.xlhhapk.mongodb.net/?retryWrites=true&w=majority`;
-
+const atlasURL = `mongodb+srv://${process.env.MONGOCLOUD_USERNAME}:${process.env.MONGOCLOUD_PASSWORD}@${process.env.MONGOCLOUD_CLUSTERNAME}/${process.env.MONGOCLOUD_SPORTS_DATA_DATABASE}?retryWrites=true&w=majority`;
+var mongoConnection;
 //connect to db with mongoose
-mongoose.connect(MONGO_URI)
-.then(() => {
-    //Listen for requests
-    //app.listen(port, () => console.log(`Conntected to DB & Server running on port ${port}`));
-    console.log('Connected to MongoDB Atlas');
-    })
-.catch((error) => {
-    console.log(error)
-});
+const connectDB = async () => {
+  try {
+    mongoConnection = await mongoose.connect(atlasURL);
+    console.log("Connected to MongoDB Atlas via mongoose");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { mongoConnection, connectDB };
