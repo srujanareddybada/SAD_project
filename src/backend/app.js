@@ -71,17 +71,4 @@ connectToMongoDB((err) => {
   }
 });
 
-// mongoose
-//   .connect(MONGO_URI)
-//   .then(() => {
-//     //Listen for requests
-//     //app.listen(port, () => console.log(`Conntected to DB & Server running on port ${port}`));
-//     console.log("Connected to Mongoose for new user sign in ");
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
-
-//Mongoose
-
 module.exports = app;
