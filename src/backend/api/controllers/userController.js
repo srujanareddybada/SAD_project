@@ -6,6 +6,7 @@ var router = express.Router();
 
 //Create a user at SIGN UP
 const createUser = async (req, res) => {
+    console.log("here...........")
     const { id, username, password, email, fullname, dob, balance } = req.body;
     try {
       let user = await User.findOne({

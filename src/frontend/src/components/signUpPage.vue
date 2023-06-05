@@ -47,43 +47,90 @@ export default defineComponent({
     },
     methods: {
         async signUp() {
-            //step1: check if user already exists using email comparison -- 1st if condition
-            //step2: check password and reentered password is correct -- 2nd if condition
-            let user = await axios.get("/api/fetchuserdetails/"+this.email);
-            //let user = false;
-            if (user.data.length === 0) {
-                if (this.password === this.reenterpassword) {  
-                    let hashPassword = await bcrpyt.hash(this.password, 10);
-                    await axios.post("/api/signup", {
-                            fullname: this.fullName,
-                            username: this.userName,
-                            email: this.email,
-                            password: hashPassword,
-                            dob: this.dateOfBirth
-                        })
-                        .then((res) => {
-                            if (res.data.acknowledged) {
-                                alert("Registration successfull!");
-                                return this.$router.push({
-                                    name: 'loginPage'
-                                })
-                            } else {
-                                //alert("Registration unsuccessfull, please try again")
-                                this.clearInputs();
-                            }
-                        })
-                        .catch(() => {
-                            //alert("Registration failed. Please try later");
-                            this.clearInputs();
-                        })
-                } else {
-                    console.log("Passwords do not match, please re-enter the correct password");
-                    this.reenterpassword = ''
-                }
-            } else {
-                console.log("User already exists, use a different email address");
-                this.clearInputs()
-            }
+            // //step1: check if user already exists using email comparison -- 1st if condition
+            // //step2: check password and reentered password is correct -- 2nd if condition
+            // let user = await axios.get("/api/fetchuserdetails/"+this.email);
+            // //let user = false;
+            // if (user.data.length === 0) {
+            //     if (this.password === this.reenterpassword) {  
+            //         let hashPassword = await bcrpyt.hash(this.password, 10);
+            //         await axios.post("/api/signup", {
+            //                 fullname: this.fullName,
+            //                 username: this.userName,
+            //                 email: this.email,
+            //                 password: hashPassword,
+            //                 dob: this.dateOfBirth
+            //             })
+            //             .then((res) => {
+            //                 if (res.data.acknowledged) {
+            //                     alert("Registration successfull!");
+            //                     return this.$router.push({
+            //                         name: 'loginPage'
+            //                     })
+            //                 } else {
+            //                     //alert("Registration unsuccessfull, please try again")
+            //                     this.clearInputs();
+            //                 }
+            //             })
+            //             .catch(() => {
+            //                 //alert("Registration failed. Please try later");
+            //                 this.clearInputs();
+            //             })
+            //     } else {
+            //         console.log("Passwords do not match, please re-enter the correct password");
+            //         this.reenterpassword = ''
+            //     }
+            // } else {
+            //     console.log("User already exists, use a different email address");
+            //     this.clearInputs()
+            // }
+
+            await axios.post("/api/user", {
+
+fullname: this.fullName,
+
+username: this.userName,
+
+email: this.email,
+
+password: this.password,
+
+dob: this.dateOfBirth
+
+})
+
+.then((res) => {
+
+console.log(res);
+
+if (res.data.acknowledged) {
+
+    alert("Registration successfull!");
+
+    return this.$router.push({
+
+        name: 'loginPage'
+
+    })
+
+} else {
+
+    //alert("Registration unsuccessfull, please try again")
+
+    this.clearInputs();
+
+}
+
+})
+
+.catch(() => {
+
+//alert("Registration failed. Please try later");
+
+this.clearInputs();
+
+})
+
         },
         backToHomePage() {
             return this.$router.push({

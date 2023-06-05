@@ -10,7 +10,7 @@ const {
   createUser
 } = require('../controllers/userController')
 
-router.put('/', createUser)
+router.post('/', createUser)
 
 
 
