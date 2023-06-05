@@ -12,9 +12,6 @@ const {
 
 router.post('/', createUser)
 
-const { createUser } = require("../controllers/userController");
-
-router.put("/", createUser);
 
 /**
  * @swagger
