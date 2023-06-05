@@ -1,27 +1,3 @@
-// Synopsis:
-// 1. The code establishes a connection to a MongoDB database using the connectToMongoDB function and retrieves the database object using the 
-//    getDB function.
-// 2. The UpcomingMatches10Days function is defined as an async function that takes the MongoDB database object (mongodb) as a parameter.
-// 3. Inside the UpcomingMatches10Days function:
-//     - The current date and the date for 10 days from now are calculated.
-//     - The dates are formatted as required by the API.
-//     - An HTTP GET request is made to the sports API to fetch upcoming matches within the specified date range.
-//     - The fetched matches are filtered based on the status "TIMED".
-//     - Random winning odds are generated and assigned to each match.
-//     - Existing documents in the "Upcoming_Matches_10_Days" collection are deleted.
-//     - The filtered matches with odds are inserted into the "Upcoming_Matches_10_Days" collection.
-//     - The number of inserted documents is logged to the console.
-//     - A callback function is provided to the connectToMongoDB function, which is executed once the MongoDB connection is established or an error 
-// 	  occurs. If the connection is successful, the UpcomingMatches10Days function is called with the MongoDB database object as an argument. If 
-// 	  there is an error, an unsuccessful connection message is logged to the console.
-
-// Overview:
-// The provided code connects to a MongoDB database, fetches upcoming matches from a sports API, assigns random winning odds to each match, and stores 
-// the filtered matches with odds in the MongoDB collection. It makes use of the axios library to fetch data from the API and the dotenv library to 
-// load environment variables from a .env file. The MongoDB connection is established using a separate module (./config/db_connections/MongoDBConfig) 
-// that exports the connectToMongoDB and getDB functions.
-// ************************************************************** Logic Start******************************************************************
-
 const { connectToMongoDB, getDB } = require('./config/db_connections/MongoDBConfig');
 const axios = require('axios');
 require("dotenv").config();
@@ -31,10 +7,26 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Function to generate decimal odds
-function generateDecimalOdds() {
-  const decimalOdds = getRandomNumber(1, 100) / 100; // Generate a random number between 1 and 100 and divide by 100
-  return decimalOdds.toFixed(2); // Round the decimal odds to two decimal places
+// Function to generate moneyline odds
+function generateMoneylineOdds() {
+  const odds = getRandomNumber(-200, 200); // Generate a random number between -200 and 200
+  return odds;
+}
+
+// Function to generate moneyline odds for draw
+function generateDrawOdds(homeTeamWinningOdds, awayTeamWinningOdds) {
+  const oddsDifference = Math.abs(homeTeamWinningOdds - awayTeamWinningOdds);
+  let drawMatchOdds = generateMoneylineOdds();
+
+  if (oddsDifference < 0.1) {
+    // If the odds difference is less than 0.1, set draw odds to a high value
+    drawMatchOdds = Math.abs(drawMatchOdds) + 1000;
+  } else {
+    // Otherwise, set draw odds to a low value
+    drawMatchOdds = Math.abs(drawMatchOdds) + 100;
+  }
+
+  return drawMatchOdds;
 }
 
 // Function to fetch and store upcoming matches with status as "timed" within date range
@@ -63,12 +55,14 @@ async function UpcomingMatches10Days(mongodb) {
     // Filter the fetched matches based on status as "timed"
     const matches = response.data.matches.filter(match => match.status === 'TIMED');
 
-    // Generate and assign decimal odds for each match
+    // Generate and assign moneyline odds for each match
     const matchesWithOdds = matches.map(match => {
-      const homeTeamWinningOdds = generateDecimalOdds();
-      const awayTeamWinningOdds = generateDecimalOdds();
+      const homeTeamWinningOdds = generateMoneylineOdds();
+      const awayTeamWinningOdds = generateMoneylineOdds();
+      const drawMatchOdds = generateDrawOdds(homeTeamWinningOdds, awayTeamWinningOdds);
       match.HomeTeam_WinningOdds = homeTeamWinningOdds;
       match.AwayTeam_WinningOdds = awayTeamWinningOdds;
+      match.Draw_MatchOdds = drawMatchOdds;
       return match;
     });
 
@@ -93,3 +87,9 @@ connectToMongoDB((err) => {
     console.log("MongoDB connection to Sports data DB is unsuccessful");
   }
 });
+
+module.exports = {
+  generateMoneylineOdds,
+  generateDrawOdds,
+  UpcomingMatches10Days,
+};
