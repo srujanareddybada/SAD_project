@@ -18,6 +18,7 @@ const { connectDB } = require("./config/db_connections/mongooseDBConfig");
 var indexRouter = require("./api/routes/index");
 var usersRouter = require("./api/routes/user");
 var betsRouter = require("./api/routes/bets");
+//var authRouter = require("./api/routes/auth");
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/", indexRouter);
 app.use("/api/bets", betsRouter);
 app.use("/api/user", usersRouter);
+//app.use("/api/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -60,15 +62,31 @@ app.use(function (err, req, res, next) {
 });
 
 // Mongo connection -- To connect sports data database
-var mongodb;
-connectToMongoDB((err) => {
-  if (!err) {
-    console.log("MongoDB connection to Sports data DB is success");
-    mongodb = getDB();
-    app.set("mongodb", mongodb);
-  } else {
-    console.log("MongoDB connection to Sports data DB is unsucessfull");
-  }
+// var mongodb;
+// connectToMongoDB((err) => {
+//   if (!err) {
+//     console.log("MongoDB connection to Sports data DB is success");
+//     mongodb = getDB();
+//     app.set("mongodb", mongodb);
+//   } else {
+//     console.log("MongoDB connection to Sports data DB is unsucessfull");
+//   }
+// });
+
+
+//Mongoose
+// MongoDB Atlas
+const MONGO_URI = `mongodb+srv://Bittukun:Undertaker%4019952402@cluster0.xlhhapk.mongodb.net/?retryWrites=true&w=majority`;
+
+//connect to db with mongoose
+mongoose.connect(MONGO_URI)
+.then(() => {
+    //Listen for requests
+    //app.listen(port, () => console.log(`Conntected to DB & Server running on port ${port}`));
+    console.log('Connected to Mongoose for new user sign in ');
+    })
+.catch((error) => {
+    console.log(error)
 });
 
 module.exports = app;
