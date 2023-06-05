@@ -22,8 +22,8 @@ const createBetAsync = async (req, res, next) => {
   db = req.app.get("db");
   const userId = req.params.id;
   try {
-    var result = await services.createBetAsync(db);
-    res.status(200).json(result);
+    var result = await services.createBetAsync(req.params.id, req.body);
+    res.status(201).json(result);
   } catch {
     res.status(500).json({
       error: "Could not get the user bets",

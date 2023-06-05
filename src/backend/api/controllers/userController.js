@@ -1,12 +1,11 @@
-var express = require('express');
-const jwt = require('jsonwebtoken')
-const User = require('../model/userModel'); 
+var express = require("express");
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 var router = express.Router();
 
 //Create a user at SIGN UP
 const createUser = async (req, res) => {
-    console.log("here...........")
     const { id, username, password, email, fullname, dob, balance } = req.body;
     try {
       let user = await User.findOne({
@@ -32,21 +31,21 @@ const createUser = async (req, res) => {
     }
   }
 
-  //Function to construct JWT TOKEN
+//Function to construct JWT TOKEN
 function constructJwtToken(user) {
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        email: user.email,
-      },
-      process.env.SECRET,
-      {
-        expiresIn: "1h",
-      }
-    )
-    return token
-  }
+  const token = jwt.sign(
+    {
+      userId: user._id,
+      email: user.email,
+    },
+    process.env.SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
+  return token;
+}
 
-  module.exports = {   
-    createUser,
-  };
+module.exports = {
+  createUser,
+};
