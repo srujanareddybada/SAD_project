@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { Counter } = require("./CounterModel");
 
 var userSchema = new mongoose.Schema(
   {
@@ -13,27 +14,19 @@ var userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const counterSchema = new mongoose.Schema({
-    _id: { type: String, required: true },
-    sequence_value: { type: Number, default: 0 }
-  });
-  
-const Counter = mongoose.model('Counter', counterSchema);
-
-
 // Auto-incremented ID
-userSchema.pre('save', function(next) {
-    const doc = this;
-    Counter.findByIdAndUpdate(
-      { id: 'yourSchemaId' }, // Use a unique ID for each schema where auto-increment is needed
-      { $inc: { sequence_value: 1 } },
-      { new: true, upsert: true },
-      function(error, counter) {
-        if (error) return next(error);
-        doc.id = counter.sequence_value;
-        next();
-      }
-    );
-  });
+userSchema.pre("save", function (next) {
+  const doc = this;
+  Counter.findByIdAndUpdate(
+    { id: "yourUserSchemaId" }, // Use a unique ID for each schema where auto-increment is needed
+    { $inc: { sequence_value: 1 } },
+    { new: true, upsert: true },
+    function (error, counter) {
+      if (error) return next(error);
+      doc.id = counter.sequence_value;
+      next();
+    }
+  );
+});
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
