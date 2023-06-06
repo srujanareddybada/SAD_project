@@ -1,28 +1,36 @@
 const mongoose = require("mongoose");
 const UserBets = require("../models/userBetsModel");
-const allUserBetsAsync = async (userId, betlist) => {
-  const newBets = [];
+const createBetAsync = async (userId, betlist) => {
+  if (!Array.isArray(betlist)) {
+    throw new Error("Incorrect type: Expected a number");
+  }
 
-  betlist.foreach((element, index, array) => {
-    myList.push({
-      userId: 1,
-      betAmount: element.betAmount,
-      successBetReturnAmount: element.successBetReturnAmount,
-      betEvent: element.betEvent,
-    });
-  });
-
-  UserBets.insertMany(newBets)
+  await UserBets.insertMany(betlist)
     .then((result) => {
-      return "Bets added successfully!";
+      return result;
     })
     .catch((error) => {
-      console.error("Bets could not be added! Something unexpected happened!");
+      console.error(error);
+      throw new Error(error);
     });
 };
 
-const createBetAsync = async (db) => {
-  return "To be implemented!";
+const allUserBetsAsync = async (userId) => {
+  console.log(userId);
+  try {
+    var result = await UserBets.find({ userId: userId });
+    return result;
+  } catch (err) {
+    console.error(error);
+    throw new Error(error);
+  }
+  // .then((result) => {
+  //   return result;
+  // })
+  // .catch((error) => {
+  //   console.error(error);
+  //   throw new Error(error);
+  // });
 };
 services = {
   allUserBetsAsync,
