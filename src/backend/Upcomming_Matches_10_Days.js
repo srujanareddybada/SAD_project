@@ -9,21 +9,22 @@ function getRandomNumber(min, max) {
 
 // Function to generate moneyline odds
 function generateMoneylineOdds() {
-  const odds = getRandomNumber(-200, 200); // Generate a random number between -200 and 200
-  return odds;
+  const odds1 = getRandomNumber(10, 90); // Generate a random number between -200 and 200
+  const odds2 = 100 - odds1
+  return [100 / odds1, 100 / odds2];
 }
 
 // Function to generate moneyline odds for draw
-function generateDrawOdds(homeTeamWinningOdds, awayTeamWinningOdds) {
-  const oddsDifference = Math.abs(homeTeamWinningOdds - awayTeamWinningOdds);
+function generateDrawOdds(odds) {
+  const oddsDifference = Math.abs(odds[0] - odds[1]);
   let drawMatchOdds = generateMoneylineOdds();
 
   if (oddsDifference < 0.1) {
     // If the odds difference is less than 0.1, set draw odds to a high value
-    drawMatchOdds = Math.abs(drawMatchOdds) + 1000;
+    drawMatchOdds = Math.abs(drawMatchOdds[0]) + 1000;
   } else {
     // Otherwise, set draw odds to a low value
-    drawMatchOdds = Math.abs(drawMatchOdds) + 100;
+    drawMatchOdds = Math.abs(drawMatchOdds[0]) + 100;
   }
 
   return drawMatchOdds;
@@ -57,12 +58,11 @@ async function UpcomingMatches10Days(mongodb) {
 
     // Generate and assign moneyline odds for each match
     const matchesWithOdds = matches.map(match => {
-      const homeTeamWinningOdds = generateMoneylineOdds();
-      const awayTeamWinningOdds = generateMoneylineOdds();
-      const drawMatchOdds = generateDrawOdds(homeTeamWinningOdds, awayTeamWinningOdds);
-      match.HomeTeam_WinningOdds = homeTeamWinningOdds;
-      match.AwayTeam_WinningOdds = awayTeamWinningOdds;
-      match.Draw_MatchOdds = drawMatchOdds;
+      const [homeTeamWinningOdds, awayTeamWinningOdds] = generateMoneylineOdds();
+      const drawMatchOdds = generateDrawOdds([homeTeamWinningOdds, awayTeamWinningOdds]); // Pass the array of odds
+      match.HomeTeam_WinningOdds = homeTeamWinningOdds.toFixed(2); // Restrict to 2 decimal places;
+      match.AwayTeam_WinningOdds = awayTeamWinningOdds.toFixed(2); // Restrict to 2 decimal places;
+      match.Draw_MatchOdds = drawMatchOdds.toFixed(2); // Restrict to 2 decimal places;
       return match;
     });
 
@@ -77,16 +77,6 @@ async function UpcomingMatches10Days(mongodb) {
   }
 }
 
-let db;
-connectToMongoDB((err) => {
-  if (!err) {
-    console.log("MongoDB connection to Sports data DB is successful");
-    db = getDB();
-    UpcomingMatches10Days(db);
-  } else {
-    console.log("MongoDB connection to Sports data DB is unsuccessful");
-  }
-});
 
 module.exports = {
   generateMoneylineOdds,
