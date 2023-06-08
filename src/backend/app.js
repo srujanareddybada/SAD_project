@@ -5,7 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const specs = require("./config/api_documentation/swagger");
 const swaggerUi = require("swagger-ui-express");
-const mongoose = require("mongoose");
+const setupSocket = require("./config/pub-sub/socketIO");
 
 const {
   connectToMongoDB,
@@ -24,6 +24,13 @@ var app = express();
 // MongoDB Database connection middleware
 connectDB();
 
+const http = require("http");
+const server = http.createServer(app);
+const io = require("socket.io")(server);
+
+// Setup Socket.io
+setupSocket(io);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
@@ -34,7 +41,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
 // Swagger documentation middleware
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -68,7 +74,7 @@ connectToMongoDB((err) => {
     mongodb = getDB();
     app.set("mongodb", mongodb);
   } else {
-    console.log("MongoDB connection to Sports data DB is unsucessfull");
+    console.log("MongoDB connection to Sports data DB is unsucessful");
   }
 });
 
