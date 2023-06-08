@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { Counter } = require("./CounterModel");
 
 var userSchema = new mongoose.Schema(
   {
@@ -14,26 +15,23 @@ var userSchema = new mongoose.Schema(
 );
 
 const counterSchema = new mongoose.Schema({
-    _id: { type: String, required: true },
-    sequence_value: { type: Number, default: 0 }
-  });
-  
-const Counter = mongoose.model('Counter', counterSchema);
-
+  _id: { type: String, required: true },
+  sequence_value: { type: Number, default: 0 },
+});
 
 // Auto-incremented ID
-userSchema.pre('save', async function() {
-    const doc = this;
-    try {
-        const counter = await Counter.findByIdAndUpdate(
-          'counterSchema',
-          { $inc: { sequence_value: 1 } },
-          { new: true, upsert: true }
-        );
-        doc.id = counter.sequence_value;
-      } catch (error) {
-        throw error;
-      }
-    });
-    
-    module.exports = mongoose.model('User', userSchema);
+userSchema.pre("save", async function () {
+  const doc = this;
+  try {
+    const counter = await Counter.findByIdAndUpdate(
+      "counterSchema",
+      { $inc: { sequence_value: 1 } },
+      { new: true, upsert: true }
+    );
+    doc.id = counter.sequence_value;
+  } catch (error) {
+    throw error;
+  }
+});
+
+module.exports = mongoose.model("User", userSchema);
