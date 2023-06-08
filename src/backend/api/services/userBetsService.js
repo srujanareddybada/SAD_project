@@ -21,8 +21,8 @@ const allUserBetsAsync = async (userId) => {
     var result = await UserBets.find({ userId: userId });
     return result;
   } catch (err) {
-    console.error(error);
-    throw new Error(error);
+    console.error(err);
+    throw new Error(err);
   }
   // .then((result) => {
   //   return result;
