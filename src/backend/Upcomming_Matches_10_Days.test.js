@@ -10,11 +10,14 @@ jest.mock('axios');
 
 describe('generateMoneylineOdds', () => {
   it('should generate a random number within the specified range', () => {
-    const odds = generateMoneylineOdds();
-    expect(odds).toBeGreaterThanOrEqual(-200);
-    expect(odds).toBeLessThanOrEqual(200);
+    const [odds1, odds2] = generateMoneylineOdds();
+    expect(odds1).toBeGreaterThanOrEqual(1);
+    expect(odds1).toBeLessThanOrEqual(100);
+    expect(odds2).toBeGreaterThanOrEqual(1);
+    expect(odds2).toBeLessThanOrEqual(100);
   });
 });
+
 
 describe('generateDrawOdds', () => {
   it('should generate draw odds based on home team and away team odds', () => {
