@@ -142,7 +142,7 @@
                             }
                         }
     
-                        console.log(this.matchDetailsArray);
+                        //console.log(this.matchDetailsArray);
                         
                     })
                     .catch(() => {
