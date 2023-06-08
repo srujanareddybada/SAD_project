@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { MongoClient } = require('mongodb');
+const { config } = require('dotenv');
 const {
   generateMoneylineOdds,
   generateDrawOdds,
@@ -7,6 +8,9 @@ const {
 } = require('../backend/Upcomming_Matches_10_Days');
 
 jest.mock('axios');
+
+// Load environment variables from .env file
+config();
 
 describe('generateMoneylineOdds', () => {
   it('should generate a random number within the specified range', () => {
@@ -62,7 +66,7 @@ describe('UpcomingMatches10Days', () => {
     await UpcomingMatches10Days(mongodb);
 
     expect(axios.get).toHaveBeenCalledWith(expect.any(String), {
-      headers: { 'X-Auth-Token': expect.any(String) },
+      headers: { 'X-Auth-Token': process.env.FOOTBALL_DATA_API_KEY },
     });
 
     expect(collectionMock.deleteMany).toHaveBeenCalled();
