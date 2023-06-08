@@ -1,15 +1,10 @@
-var express = require("express");
 var services = require("../services/userBetsService");
 
-var router = express.Router();
-
-let db;
-
 const getAllUserBetsAsync = async (req, res, next) => {
-  db = req.app.get("db");
   const userId = req.params.id;
   try {
-    var result = await services.allUserBetsAsync(db, userId);
+    var result = await services.allUserBetsAsync(userId);
+    console.log(result);
     res.status(200).json(result);
   } catch {
     res.status(500).json({
@@ -19,15 +14,22 @@ const getAllUserBetsAsync = async (req, res, next) => {
 };
 
 const createBetAsync = async (req, res, next) => {
-  db = req.app.get("db");
   const userId = req.params.id;
-  try {
-    var result = await services.createBetAsync(req.params.id, req.body);
-    res.status(201).json(result);
-  } catch {
-    res.status(500).json({
-      error: "Could not get the user bets",
-    });
+  console.log("UserId:" + userId);
+  const betlist = req.body;
+  console.log(betlist);
+  if (Array.isArray(betlist)) {
+    try {
+      var result = await services.createBetAsync(userId, betlist);
+      res.status(201).json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        error: "Could not create a new user bet(s)",
+      });
+    }
+  } else {
+    res.status(400).json({ error: "provided list of bets is not an array" });
   }
 };
 
