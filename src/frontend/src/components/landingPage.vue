@@ -62,7 +62,8 @@
                                     <!--POP-UP TO PLACE BETS-->
                                     <div class="bg-gray-200 p-2">
                                         <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
+                                                {{ matchDetail.homeTeamWinningOdds }}</button>
                                             <teleport to="body">
                                                 <div class="modal" v-if="showModal">
                                                     <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -122,26 +123,26 @@
                                 <div class="bg-gray-200 p-2 flex">
                                     <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                 </div>
-                                 <!--POP-UP TO PLACE BETS-->
+                                <!--POP-UP TO PLACE BETS-->
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
-                                            <teleport to="body">
-                                                <div class="modal" v-if="showModal">
-                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
-                                                </div>
-                                            </teleport>
-                                        </div>
+                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                        <teleport to="body">
+                                            <div class="modal" v-if="showModal">
+                                                <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                            </div>
+                                        </teleport>
+                                    </div>
                                 </div>
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
-                                            <teleport to="body">
-                                                <div class="modal" v-if="showModal">
-                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
-                                                </div>
-                                            </teleport>
-                                        </div>
+                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                        <teleport to="body">
+                                            <div class="modal" v-if="showModal">
+                                                <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                            </div>
+                                        </teleport>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -246,15 +247,14 @@ export default defineComponent({
     position: relative;
 }
 
-
-.modal{
-  position: fixed;
-  z-index: 999;
-  top: 20%;
-  left: 50%;
-  width: 40%;
-  height: 100%;
-  margin-left: -150px;
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 20%;
+    left: 50%;
+    width: 40%;
+    height: 100%;
+    margin-left: -150px;
 }
 
 .modal>div {

@@ -40,7 +40,7 @@
                 </p>
                 <p class="mx-auto text-center block w-1/2 p-2.5 text-sm font-light text-gray-500 dark:text-gray-400">--Or Login with--</p>
                 <button type="button" class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5"> Log in with Google </button><br />
-                <button type="button" class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5" v-on:click="check()">Log in with Facebook</button>
+                <button type="button" class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5">Log in with Facebook</button>
             </div>
         </div>
     </div>
@@ -74,8 +74,6 @@
                 //step1: check if user already exists using email comparison -- 1st if condition
                 //step2: check password and reentered password is correct -- 2nd if condition
                 //let user = await axios.get("/api/fetchuserdetails/"+this.email);
-                let user = false;
-                if (!user) {
                 if (this.password === this.reenterpassword) {
                     let hashPassword = await bcrpyt.hash(this.password, 10);
                     await axios.post("/api/user", {
@@ -86,12 +84,14 @@
                             dob: this.dateOfBirth
                         })
                         .then((res) => {
-                            console.log(res);
-                            if (res.data.acknowledged) {
+                            if (res.status == 200) {
                                 alert("Registration successfull!");
                                 return this.$router.push({
                                     name: 'loginPage'
                                 })
+                            } else if (res.status == 404){
+                                alert("User already exists, use a different email address");
+                                this.clearInputs();
                             } else {
                                 alert("Registration unsuccessfull, please try again")
                                 this.clearInputs();
@@ -105,10 +105,7 @@
                     alert("Passwords do not match, please re-enter the correct password");
                     this.reenterpassword = ''
                 }
-                } else {
-                    alert("User already exists, use a different email address");
-                    this.clearInputs()
-                }
+                
             },
             backToHomePage() {
                 return this.$router.push({
@@ -127,9 +124,6 @@
                     this.password = '',
                     this.reenterpassword = '',
                     this.dateOfBirth = new Date()
-            },
-            check() {
-                alert(this.dateOfBirth + " " + typeof this.dateOfBirth)
             },
             calculateAge(){
                 let dob = new Date(this.dateOfBirth);
