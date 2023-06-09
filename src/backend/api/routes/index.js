@@ -21,7 +21,7 @@ router.get("/", function (req, res, next) {
  *
  */
 
-router.get("/api/matches", async function (req, res, next) {
+router.put("/api/matches", async function (req, res, next) {
   mongodb = req.app.get("mongodb");
   await provisoner.UpcomingMatches10Days(mongodb);
   res.status(200).json("Success");

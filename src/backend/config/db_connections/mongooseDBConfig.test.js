@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { connectDB } = require("../db_connections/mongooseDBConfig");
-// const dotenv = require("dotenv-flow").config();
 
 // Mocking the mongoose.connect function
 mongoose.connect = jest.fn();

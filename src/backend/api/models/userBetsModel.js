@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Counter } = require("./CounterModel");
+// const { Counter } = require("./CounterModel");
 
 var betEventSchema = new mongoose.Schema({
   odds: { type: Number, required: false },
@@ -14,7 +14,7 @@ var userBetsSchema = new mongoose.Schema(
     successBetReturnAmount: { type: String, required: true },
     betEvent: { type: [betEventSchema] },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("UserBets", userBetsSchema);
