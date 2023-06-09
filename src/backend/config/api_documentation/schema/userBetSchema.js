@@ -15,11 +15,7 @@
  *           type: object
  *           description: Match details associated with the bet
  *         outcome:
- *           type: string
- *           enum:
- *                 - scheduled
- *                 - win
- *                 - loss
+ *           $ref: '#/components/schemas/BetOutcomeEnum'
  *           description: win loss or scheduled
  *         createdAt:
  *           type: string

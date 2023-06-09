@@ -14,8 +14,7 @@ router.post("/", createUser);
  * @swagger
  * /api/user/{id}/bets:
  *   get:
-      tags:
- *      - User Bets
+      
  *    parameters:
  *      - name: id
  *        in: path
@@ -28,6 +27,8 @@ router.post("/", createUser);
  *    responses:
  *       200:
  *         description: list of user bets
+ *    tags:
+ *      - User Bets
  */
 router.get(`/:id/bets`, controller.getAllUserBetsAsync);
 
