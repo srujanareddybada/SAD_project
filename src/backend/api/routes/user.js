@@ -6,9 +6,15 @@ var express = require("express");
 var router = express.Router();
 
 //controller functions are imported
-const { createUser } = require("../controllers/userController");
+const { createUser,
+          grantOauth2UserAccess,
+} = require("../controllers/userController");
 
 router.post("/", createUser);
+
+//create user if registered udsing Oauth2 login
+router.post('/oauth2login', grantOauth2UserAccess)
+
 
 /**
  * @swagger
