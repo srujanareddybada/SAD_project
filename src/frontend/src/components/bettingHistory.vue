@@ -1,5 +1,6 @@
 <template>
     <userHeader subHeaderName="Bet History"/>
+    <p>Your Bet History</p>
 </template>
 
 <script lang="ts">
