@@ -6,14 +6,13 @@ var router = express.Router();
 
 //Create a user at SIGN UP
 const createUser = async (req, res) => {
-    const { id, username, password, email, fullname, dob, balance } = req.body;
+    const { username, password, email, fullname, dob, balance } = req.body;
     try {
       let user = await User.findOne({
         email
       });
       if (!user) {
         user = await User.create({
-            id, 
             username,
             password, 
             email, 
@@ -21,6 +20,9 @@ const createUser = async (req, res) => {
             dob, 
             balance,
         })
+      }
+      else{
+        return res.status(404).json({ error: 'User already exists' });
       }
       console.log("logged in")
       const token = constructJwtToken(user)

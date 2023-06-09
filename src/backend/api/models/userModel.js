@@ -3,7 +3,6 @@ const { Counter } = require("./CounterModel");
 
 var userSchema = new mongoose.Schema(
   {
-    id: { type: Number, required: false, unique: true },
     username: { type: String, required: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -13,25 +12,5 @@ var userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-const counterSchema = new mongoose.Schema({
-  _id: { type: String, required: true },
-  sequence_value: { type: Number, default: 0 },
-});
-
-// Auto-incremented ID
-userSchema.pre("save", async function () {
-  const doc = this;
-  try {
-    const counter = await Counter.findByIdAndUpdate(
-      "counterSchema",
-      { $inc: { sequence_value: 1 } },
-      { new: true, upsert: true }
-    );
-    doc.id = counter.sequence_value;
-  } catch (error) {
-    throw error;
-  }
-});
 
 module.exports = mongoose.model("User", userSchema);
