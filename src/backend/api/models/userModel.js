@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { Counter } = require("./CounterModel");
 
 var userSchema = new mongoose.Schema(
   {
@@ -10,7 +9,7 @@ var userSchema = new mongoose.Schema(
     dob: { type: Date, required: true },
     balance: { type: Number, required: false, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("User", userSchema);
