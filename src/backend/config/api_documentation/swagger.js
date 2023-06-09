@@ -1,5 +1,6 @@
 const swaggerJsdoc = require("swagger-jsdoc");
-
+const path = require("path");
+const schema = path.join(__dirname, "/config/api_documentation/schema/*.yaml");
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -9,7 +10,7 @@ const options = {
       description: "API documentation for your Express application for Betting",
     },
   },
-  apis: ["./api/routes/*.js"], // Specify the path to your API routes
+  apis: ["./api/routes/*", "./config/api_documentation/schema/*.js"], // Specify the path to your API routes
 };
 
 const specs = swaggerJsdoc(options);
