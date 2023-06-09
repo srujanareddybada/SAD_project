@@ -14,7 +14,7 @@ var userBetsSchema = new mongoose.Schema(
     successBetReturnAmount: { type: String, required: true },
     betEvent: { type: [betEventSchema] },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 module.exports = mongoose.model("UserBets", userBetsSchema);
