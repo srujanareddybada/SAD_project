@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { Counter } = require("./CounterModel");
 
 var userSchema = new mongoose.Schema(
   {
