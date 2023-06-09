@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Counter } = require("./CounterModel");
+// const { Counter } = require("./CounterModel");
 
 var betEventSchema = new mongoose.Schema({
   odds: { type: Number, required: false },
