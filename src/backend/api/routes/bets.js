@@ -5,6 +5,9 @@ var router = express.Router();
  * @swagger
  * /api/bets:
  *   get:
+ *     tags:
+ *      - Matches
+ *      - Bets
  *     summary: Get all betting events
  *     description: Retrieve a list of all events
  *     responses:
