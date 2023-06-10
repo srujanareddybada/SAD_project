@@ -94,6 +94,16 @@ import axios from "axios";
 import bcrpyt from "bcryptjs";
 //import bcrpyt from 'bcryptjs'
 
+const salt = await new Promise<string>((resolve, reject) => {
+  bcrpyt.genSalt(10, (err, salt) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(salt);
+    }
+  });
+});
+
 export default defineComponent({
   name: "loginComp",
   data() {
@@ -109,7 +119,7 @@ export default defineComponent({
       });
     },
     async login() {
-      let hashPassword = await bcrpyt.hash(this.password, 10);
+      let hashPassword = await bcrpyt.hash(this.password, salt);
 
       await axios
         .post("/api/login", {

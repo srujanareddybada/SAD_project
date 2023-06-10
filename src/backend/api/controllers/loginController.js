@@ -6,7 +6,7 @@ const loginAsync = async (req, res, next) => {
     var user = await services.loginAsync(cred);
     console.log(user);
     if (user) {
-      res.status(201).json(user);
+      res.status(200).json(user);
     } else {
       res.status(400).json({ message: "Email or Password did not match!" });
     }
