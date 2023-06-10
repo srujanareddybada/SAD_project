@@ -32,3 +32,25 @@
  *         - updatedAt
  *         - outcome
  */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserBets:
+ *      type: array
+ *      items:
+ *       $ref: '#/components/schemas/UserBet'
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     BetBalance:
+ *       type: object
+ *       properties:
+ *         balance:
+ *           type: string
+ *           description: The amount of the bet
+ */
