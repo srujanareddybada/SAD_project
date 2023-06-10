@@ -19,6 +19,7 @@ const createUser = async (req, res) => {
             fullname, 
             dob, 
             balance,
+            admin,
         })
       }
       else{
@@ -70,6 +71,7 @@ const grantOauth2UserAccess = async (req, res) => {
             fullname: decoded.name, 
             dob: decoded.birthday, 
             balance: 0,
+            admin: 0,
         })
         console.log("grantOauth2UserAccess")
         const generatedToken = generateJwtToken(user)

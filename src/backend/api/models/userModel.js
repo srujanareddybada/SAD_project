@@ -8,6 +8,7 @@ var userSchema = new mongoose.Schema(
     fullname: { type: String, required: true },
     dob: { type: Date, required: true },
     balance: { type: Number, required: false, default: 0 },
+    admin: { type: Boolean, required: true, default: 0 },
   },
   { timestamps: true, versionKey: false }
 );
