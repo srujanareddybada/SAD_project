@@ -19,9 +19,9 @@
     <div class="w-4/5 bg-red-200 container">
         <!--SEARCH BAR-->
         <div class="flex h-13">
-            <input type="text" class="p-2 border border-gray-300 rounded-l-md w-full" placeholder="Enter a team name..." />
-            <button class="bg-green-400 hover:bg-blue-600 text-white p-2 rounded-r-md">Search</button>
-            <button class="bg-red-400 hover:bg-blue-600 text-white p-2 rounded-r-md">Reset</button>
+            <input type="text" class="p-2 border border-gray-300 rounded-l-md w-full" placeholder="Enter a team name..." v-model="searchTeam" />
+            <button class="bg-green-400 hover:bg-blue-600 text-white p-2 rounded-r-md" ref="searchData">Search</button>
+            <button class="bg-red-400 hover:bg-blue-600 text-white p-2 rounded-r-md" v-on:click="resetFilter()">Reset</button>
         </div>
         <nav class="bg-blue-300 border-gray-200 px-1 lg:px-2 py-1 text-white p-5 flex justify-center">
             <button class="bg-gray-700 hover:bg-gray-600 text-white py-1 px-1 rounded mr-4" type="button" v-on:click="dispUpMatches()">Upcoming Matches</button>
@@ -62,7 +62,8 @@
                                     <!--POP-UP TO PLACE BETS-->
                                     <div class="bg-gray-200 p-2">
                                         <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
+                                                {{ matchDetail.homeTeamWinningOdds }}</button>
                                             <teleport to="body">
                                                 <div class="modal" v-if="showModal">
                                                     <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -99,6 +100,7 @@
             </div>
             <div class="grid grid-cols-2 gap-1">
                 <div v-for="(matchDetail, j) in clickedCntMatchDetailsArray" :key="j" class="flex-shrink-0">
+                    <!-- Don't think below v-if is needed -->
                     <div v-if="matchDetail.hostingCountry === clickedCountryObject.countryName">
                         <div class="border border-gray-600">
                             <div class="flex text-sm">
@@ -122,26 +124,26 @@
                                 <div class="bg-gray-200 p-2 flex">
                                     <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                 </div>
-                                 <!--POP-UP TO PLACE BETS-->
+                                <!--POP-UP TO PLACE BETS-->
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
-                                            <teleport to="body">
-                                                <div class="modal" v-if="showModal">
-                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
-                                                </div>
-                                            </teleport>
-                                        </div>
+                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                        <teleport to="body">
+                                            <div class="modal" v-if="showModal">
+                                                <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                            </div>
+                                        </teleport>
+                                    </div>
                                 </div>
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
-                                            <teleport to="body">
-                                                <div class="modal" v-if="showModal">
-                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
-                                                </div>
-                                            </teleport>
-                                        </div>
+                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                        <teleport to="body">
+                                            <div class="modal" v-if="showModal">
+                                                <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                            </div>
+                                        </teleport>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -178,6 +180,7 @@ export default defineComponent({
     data() {
         return {
             userId: 1 as number,
+            searchTeam: ''as string,
             teleportMatchDetail: {} as matchDetails,
             teleportHomeTeamType: true as boolean,
             countryDetailsArray: [] as countryDetails[],
@@ -221,23 +224,43 @@ export default defineComponent({
         dispLiveMatches() {
             console.log("No live matches");
         },
-        // placeBetsOnHomeTeam(matDet: matchDetails) {
-        //     let compName = matDet.competitionName;
-        //     let matchSch = `${matDet.matchDateandTime.slice(0,10)} - ${matDet.matchDateandTime.slice(11,16)}`;
-        //     let hTeam = matDet.homeTeamName;
-        //     let aTeam = matDet.awayTeamName;
-        //     let hWinOdds = matDet.homeTeamWinningOdds;
-        //     alert('User ID: ' + '1' + '\n' + 'Competition Name: ' + compName + '\n' + 'Match Schedule: ' + matchSch + '\n' + 'Home Team: ' + hTeam + '\n' + 'Away Team: ' + aTeam + '\n' + 'Home Team Winning Odds: ' + hWinOdds + '\n' + 'Your Bet Amount: ')
-
-        // },
         handlePlaceBetEvent(payload: boolean) {
             this.showModal = payload;
+        },
+        resetFilter() {
+            this.searchTeam = '';
+            this.loadCompleteData();
+        },
+        loadCompleteData() {
+            this.countryDetailsArray = this.store.state.countryDetailsArray;
+            this.matchDetailsArray = this.store.state.matchDetailsArray;
+        },
+        loadFilteredData() {
+            let matchDetailsArrayForFilter: matchDetails[] = this.store.state.matchDetailsArray;
+            let clickedCntMatchDetailsArrayForFilter: matchDetails[] = this.clickedCntMatchDetailsArray;
+            this.matchDetailsArray = [];
+            this.clickedCntMatchDetailsArray = [];
+            if (this.clickedCntMatchDetailsArray.length > 0) {
+                this.clickedCntMatchDetailsArray = clickedCntMatchDetailsArrayForFilter.filter(matchDetail =>{
+                    return matchDetail.homeTeamName == this.searchTeam || matchDetail.awayTeamName == this.searchTeam
+                })
+            } else {
+                this.matchDetailsArray = matchDetailsArrayForFilter.filter(matchDetail => {
+                    return matchDetail.homeTeamName == this.searchTeam || matchDetail.awayTeamName == this.searchTeam;
+                })
+            }
+
+
         }
     },
     mounted() {
-        this.countryDetailsArray = this.store.state.countryDetailsArray;
-        this.matchDetailsArray = this.store.state.matchDetailsArray;
+        this.loadCompleteData()
+
     },
+    updated() {
+        const searchDataElement = this.$refs.searchData as HTMLElement;
+        searchDataElement.addEventListener('click', this.loadFilteredData);
+    }
 })
 </script>
 
@@ -246,15 +269,14 @@ export default defineComponent({
     position: relative;
 }
 
-
-.modal{
-  position: fixed;
-  z-index: 999;
-  top: 20%;
-  left: 50%;
-  width: 40%;
-  height: 100%;
-  margin-left: -150px;
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 20%;
+    left: 50%;
+    width: 40%;
+    height: 100%;
+    margin-left: -150px;
 }
 
 .modal>div {

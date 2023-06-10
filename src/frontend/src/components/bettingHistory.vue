@@ -1,19 +1,17 @@
 <template>
-    <userHeader subHeaderName="Personal Info"/>
-    <p>User Details</p>
+    <userHeader subHeaderName="Bet History"/>
+    <p>Your Bet History</p>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import { defineComponent } from 'vue';
 import userHeader from './userHeader.vue'
 
 export default defineComponent({
-    name:'userDetailsComp',
+    name:'historyBetsComp',
     components:{
         userHeader
     }
 })
-</script>
 
-<style>
-</style>
+</script>
