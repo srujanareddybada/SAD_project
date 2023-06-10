@@ -6,7 +6,7 @@ const client = new OAuth2Client(process.env.CLIENT_ID);var router = express.Rout
 
 //Create a user at SIGN UP
 const createUser = async (req, res) => {
-    const { username, password, email, fullname, dob, balance } = req.body;
+    const { username, password, email, fullname, dob, balance, admin, blocked } = req.body;
     try {
       let user = await User.findOne({
         email
@@ -20,6 +20,7 @@ const createUser = async (req, res) => {
             dob, 
             balance,
             admin,
+            blocked,
         })
       }
       else{

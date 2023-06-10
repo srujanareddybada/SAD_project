@@ -7,8 +7,9 @@ var userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     fullname: { type: String, required: true },
     dob: { type: Date, required: true },
-    balance: { type: Number, required: false, default: 0 },
+    balance: { type: Number, required: true, default: 0 },
     admin: { type: Boolean, required: true, default: 0 },
+    blocked: { type: Boolean, required: true, default: 0 },
   },
   { timestamps: true, versionKey: false }
 );
