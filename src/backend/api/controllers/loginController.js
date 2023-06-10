@@ -8,7 +8,7 @@ const loginAsync = async (req, res, next) => {
     if (user) {
       res.status(201).json(user);
     } else {
-      res.status(400).json("Email or Password did not match!");
+      res.status(400).json({ message: "Email or Password did not match!" });
     }
   } catch (err) {
     console.log(err);
