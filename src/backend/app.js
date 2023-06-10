@@ -18,6 +18,7 @@ var indexRouter = require("./api/routes/index");
 var usersRouter = require("./api/routes/user");
 var betsRouter = require("./api/routes/bets");
 var liveRouter = require("./api/routes/liveMatchSimulation");
+var loginRouter = require("./api/routes/login");
 
 var app = express();
 
@@ -49,6 +50,7 @@ app.use("/", indexRouter);
 app.use("/api/bets", betsRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/live", liveRouter);
+app.use("/api/login", loginRouter);
 //app.use("/api/auth", authRouter);
 
 // catch 404 and forward to error handler
