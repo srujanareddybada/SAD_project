@@ -2,7 +2,7 @@ var express = require("express");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 const { OAuth2Client } = require('google-auth-library')
-const client = new OAuth2Client(process.env.CLIENT_ID);var router = express.Router();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 //Create a user at SIGN UP
 const createUser = async (req, res) => {
@@ -98,7 +98,7 @@ async function verifyToken(token) {
   try {
     const validateToken = await client.verifyIdToken({
       idToken: token,
-      audience: process.env.CLIENT_ID,
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
     return true
   } catch (error) {

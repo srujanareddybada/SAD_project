@@ -1,9 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
 var controller = require("../controllers/userBetsController");
-var express = require("express");
-var router = express.Router();
 
 //controller functions are imported
 const { createUser,

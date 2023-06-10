@@ -6,7 +6,7 @@ var logger = require("morgan");
 const specs = require("./config/api_documentation/swagger");
 const swaggerUi = require("swagger-ui-express");
 const setupSocket = require("./config/pub-sub/socketIO");
-
+const cors = require('cors');
 const {
   connectToMongoDB,
   getDB,
@@ -14,6 +14,7 @@ const {
 
 const { connectDB } = require("./config/db_connections/mongooseDBConfig");
 
+var authRouter = require("./api/routes/auth");
 var indexRouter = require("./api/routes/index");
 var usersRouter = require("./api/routes/user");
 var betsRouter = require("./api/routes/bets");
@@ -21,6 +22,8 @@ var liveRouter = require("./api/routes/liveMatchSimulation");
 
 var app = express();
 
+//use CORS to enable cross refernce access
+app.use(cors());
 // MongoDB Database connection middleware
 connectDB();
 
@@ -46,10 +49,10 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routers
 app.use("/", indexRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/bets", betsRouter);
 app.use("/api/user", usersRouter);
 app.use("/api/live", liveRouter);
-//app.use("/api/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -66,6 +69,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+
 
 //Mongo connection -- To connect sports data database
 var mongodb;
