@@ -1,5 +1,5 @@
 <template>
-<userHeader subHeaderName="" />
+<userHeader :subHeaderName="userBlockedMessage" />
 
 <div class="flex min-h-screen">
 
@@ -62,7 +62,7 @@
                                     <!--POP-UP TO PLACE BETS-->
                                     <div class="bg-gray-200 p-2">
                                         <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
+                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
                                                 {{ matchDetail.homeTeamWinningOdds }}</button>
                                             <teleport to="body">
                                                 <div class="modal" v-if="showModal">
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="bg-gray-200 p-2">
                                         <div class="root">
-                                            <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
                                             <teleport to="body">
                                                 <div class="modal" v-if="showModal">
                                                     <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -127,7 +127,7 @@
                                 <!--POP-UP TO PLACE BETS-->
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
                                         <teleport to="body">
                                             <div class="modal" v-if="showModal">
                                                 <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                        <button v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
                                         <teleport to="body">
                                             <div class="modal" v-if="showModal">
                                                 <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -157,6 +157,9 @@
         </div>
 
         <!--DIV TO DISPLAY ALL LIVE MATCHES-->
+        <div v-show="showLiveMatches">
+            <p>No Live Matches!</p>
+        </div>
 
         <!--DIV TO DISPLAY ONLY SELECTED COUNTRY LIVE MATCHES-->
     </div>
@@ -192,7 +195,9 @@ export default defineComponent({
             showLiveMatches: false,
             showSelectedCntLiveMatches: false,
             clickedCntMatchDetailsArray: [] as matchDetails[],
-            showModal: false
+            showModal: false,
+            userBlockedMessage: '' as string,
+            isUserBlocked: false
 
         }
     },
@@ -213,29 +218,36 @@ export default defineComponent({
     methods: {
         SelectedCntUpMatchDetails(countryName: string): void {
             this.showUpcomingMatches = false;
+            this.showSelectedCntLiveMatches = false;
+            this.showLiveMatches = false;
             this.showSelectedCntMatches = true;
             this.clickedCountry = countryName;
             this.clickedCntMatchDetailsArray = [];
         },
         dispUpMatches() {
             this.showSelectedCntMatches = false;
+            this.showSelectedCntLiveMatches = false;
+            this.showLiveMatches = false;
             this.showUpcomingMatches = true;
         },
         dispLiveMatches() {
-            console.log("No live matches");
+            this.showSelectedCntMatches = false;
+            this.showUpcomingMatches = false;
+            this.showSelectedCntLiveMatches = false;
+            this.showLiveMatches = true;
         },
         handlePlaceBetEvent(payload: boolean) {
             this.showModal = payload;
         },
-        resetFilter() {
+        resetFilter():void {
             this.searchTeam = '';
             this.loadCompleteData();
         },
-        loadCompleteData() {
+        loadCompleteData():void {
             this.countryDetailsArray = this.store.state.countryDetailsArray;
             this.matchDetailsArray = this.store.state.matchDetailsArray;
         },
-        loadFilteredData() {
+        loadFilteredData():void {
             let matchDetailsArrayForFilter: matchDetails[] = this.store.state.matchDetailsArray;
             let clickedCntMatchDetailsArrayForFilter: matchDetails[] = this.clickedCntMatchDetailsArray;
             this.matchDetailsArray = [];
@@ -249,13 +261,20 @@ export default defineComponent({
                     return matchDetail.homeTeamName == this.searchTeam || matchDetail.awayTeamName == this.searchTeam;
                 })
             }
-
-
+        },
+        isUserBlockedFunc():void{
+            // // let blockedStatus = this.store.state.userObject.blocked;
+            // // if(blockedStatus){
+            //     this.isUserBlocked = true;
+            //     this.userBlockedMessage = 'You are banned from betting!'
+            // // }
+            console.log('object');
         }
     },
     mounted() {
-        this.loadCompleteData()
-
+        this.loadCompleteData();
+        this.isUserBlockedFunc()
+        //Once a user logs in, get the whole object. Use it for localStorage, isAdmin, isBlocked, name in header also
     },
     updated() {
         const searchDataElement = this.$refs.searchData as HTMLElement;
