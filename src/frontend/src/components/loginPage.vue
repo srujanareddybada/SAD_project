@@ -88,6 +88,7 @@
   </footer>
 </template>
 
+
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
@@ -153,7 +154,7 @@ export default defineComponent({
     },
     async oAuthGoogle() {
       await axios
-        .get("/api/auth/google")
+        .get("/api/auth")
         .then((res) => {
           if (res.status == 200) {
             this.$router.push({
