@@ -32,7 +32,7 @@
     <script lang="ts">
     import {defineComponent} from 'vue';
     import matchDetails from '../types/matchDetails';
-    
+    import axios from 'axios';
     export default defineComponent({
         name: 'placeBetComp',
         data() {
@@ -57,17 +57,43 @@
     
         },
         methods: {
-            handleBetOnHomeTeam() {
+           async handleBetOnHomeTeam() {
                 console.log(`You with user ID: ${this.yourUserID} placed bet of €${this.yourBetMoney} on home team with winning odds ${this.bettedHomeTeamOdd} \nMore Details on match are as follows: \nCompetition name: ${this.compName} \nHome Team: ${this.hTeam} \nAway Team: ${this.aTeam} \nMatch Schedule: ${this.matchSch.slice(0,10)} - ${this.matchSch.slice(11,16)}`);
-                //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
-                //MAYBE AN ALERT POST SUCCESSFUL BET
                 this.$emit('bet-modal-event', false);
+                //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
+                await axios.post("/api/placebet",{
+                    userid: this.yourUserID,
+                    compname: this.compName,
+                    betmoney: this.yourBetMoney,
+                    bettedteam: this.bettedHomeTeamOdd,
+                    otherteam: this.aTeam,
+                    matchsch: this.matchSch
+                }).then((res)=>{
+                    //alert('Your successfully placed your bet!');
+                    console.log(res);
+                }).catch((err)=>{
+                    //alert('Failed to place your bet, please try again!')
+                    console.error(err)
+                })
             },
-            handleBetOnAwayTeam(){
+           async handleBetOnAwayTeam(){
                 console.log(`You with user ID: ${this.yourUserID} placed bet of €${this.yourBetMoney} on away team with winning odds ${this.bettedAwayTeamOdd} \nMore Details on match are as follows: \nCompetition name: ${this.compName} \nHome Team: ${this.hTeam} \nAway Team: ${this.aTeam} \nMatch Schedule: ${this.matchSch.slice(0,10)} - ${this.matchSch.slice(11,16)}`);
-                //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
-                //MAYBE AN ALERT POST SUCCESSFUL BET
                 this.$emit('bet-modal-event', false);
+                //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
+                await axios.post("/api/placebet",{
+                    userid: this.yourUserID,
+                    compname: this.compName,
+                    betmoney: this.yourBetMoney,
+                    bettedteam: this.bettedAwayTeamOdd,
+                    otherteam: this.hTeam,
+                    matchsch: this.matchSch
+                }).then((res)=>{
+                    //alert('Your successfully placed your bet!');
+                    console.log(res);
+                }).catch((err)=>{
+                    //alert('Failed to place your bet, please try again!')
+                    console.error(err)
+                })
             },
             cancelPlacingBet(){
                 console.log('Bet cancelled');

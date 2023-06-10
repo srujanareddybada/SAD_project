@@ -167,16 +167,12 @@
 </template>
 
 <script lang="ts">
-import {
-    defineComponent
-} from 'vue';
+import {defineComponent} from 'vue';
 import userHeader from './userHeader.vue';
 import countryDetails from '../types/countryDetails';
 import matchDetails from '../types/matchDetails';
 import placeBetComp from './placeBets.vue'
-import {
-    useStore
-} from 'vuex';
+import {useStore} from 'vuex';
 
 export default defineComponent({
     name: 'landingComp',
