@@ -34,13 +34,10 @@
 </footer>
 </template>
 
-    
 <script lang="ts">
-import {
-    defineComponent
-} from 'vue';
+import {defineComponent} from 'vue';
 import axios from 'axios';
-import bcrpyt from 'bcryptjs'
+//import bcrpyt from 'bcryptjs'
 
 export default defineComponent({
     name: 'loginComp',
@@ -57,16 +54,18 @@ export default defineComponent({
             })
         },
         async login() {
-            let email = this.email;
-            let password = this.password;
-            await axios.get("/api/login/" + email)
+            await axios.post("/api/login", {
+                    email: this.email,
+                    password: this.password
+                })
                 .then((res) => {
                     let result = res.data;
                     if (result === null) {
                         alert("Account doesn't exist. Please enter proper details")
                         this.clearInputs();
                     } else {
-                        const isMatch = bcrpyt.compareSync(password, result.password);
+                        //const isMatch = bcrpyt.compareSync(password, result.password);
+                        const isMatch = true;
                         if (isMatch && (res.status == 200)) {
                             alert('Login successfull!');
                             this.$router.push({
