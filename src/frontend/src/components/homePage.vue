@@ -24,7 +24,8 @@
         </nav>
     </header>
     
-    <div v-for="(countryDetail, i) in countryDetailsArray" :key="i">
+    <!--DIV TO DISPLAY ALL UPCOMING MATCHES-->
+    <div v-for="(countryDetail, i) in countryDetailsArray" :key="i" v-show="showUpcomingMatches">
         <div class="overflow-x-scroll">
             <div class="bg-green-200 h-8 flex border border-gray-300 justify-center">
                 <img :src="countryDetail.flag" width="30" height="30" /><b>{{ countryDetail.countryName }}</b>
@@ -62,10 +63,13 @@
                     <div v-else></div>
                 </div>
             </div>
-    
             <br />
         </div>
-    
+    </div>
+
+    <!--DIV TO DISPLAY ALL LIVE MATCHES-->
+    <div v-show="showLiveMatches">
+        <p>No Live Matches!</p>
     </div>
     </template>
     
@@ -80,6 +84,8 @@
         name: 'homeComp',
         data() {
             return {
+                showUpcomingMatches: true as boolean,
+                showLiveMatches: false as boolean,
                 countryDetailsArray: [] as countryDetails[],
                 matchDetailsArray: [] as matchDetails[],
                 store: useStore()
@@ -103,6 +109,10 @@
                 })
             },
             async getUpcomingMatchList() {
+                this.showLiveMatches = false;
+                this.showUpcomingMatches = true;
+                this.matchDetailsArray = [];
+                this.countryDetailsArray = [];
                 await axios.get("/api/bets")
                     .then((res) => {
                         let result = res.data;
@@ -150,7 +160,9 @@
                     })
             },
             getLiveMatchList() {
-                console.log("No live match data yet");
+                this.showUpcomingMatches = false;
+                this.showLiveMatches = true;
+                
             },
             storeCountryData(arr:countryDetails[]){
                 this.store.dispatch('storeCountryData', arr)
