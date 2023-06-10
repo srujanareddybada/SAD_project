@@ -6,7 +6,7 @@ const loginAsync = async (user) => {
   try {
     var user = await User.find({
       password: user.password,
-      username: user.username,
+      email: user.email,
     });
     return user[0];
   } catch (err) {
