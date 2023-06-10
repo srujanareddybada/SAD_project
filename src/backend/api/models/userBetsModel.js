@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
-// const { Counter } = require("./CounterModel");
+const { matchSchema } = require("./MatchSchema");
 
 var betEventSchema = new mongoose.Schema({
-  odds: { type: Number, required: false },
+  odds: { type: Number, required: true },
   eventName: { type: String, required: false },
 });
 
 var userBetsSchema = new mongoose.Schema(
   {
-    id: { type: Number, required: false, unique: true },
     userId: { type: Number, required: true },
     betAmount: { type: String, required: true },
-    successBetReturnAmount: { type: String, required: true },
-    betEvent: { type: [betEventSchema] },
+    successBetReturnAmount: { type: String, required: false },
+    outcome: { type: String, required: false },
+    betEvent: { type: [betEventSchema], required: false },
+    match: { type: [matchSchema], required: false },
   },
   { timestamps: true, versionKey: false }
 );

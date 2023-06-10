@@ -5,6 +5,10 @@ const createBetAsync = async (userId, betlist) => {
     throw new Error("Incorrect type: Expected a number");
   }
 
+  betlist.forEach((bet) => {
+    bet.userId = userId;
+  });
+
   await UserBets.insertMany(betlist)
     .then((result) => {
       return result;
@@ -24,13 +28,6 @@ const allUserBetsAsync = async (userId) => {
     console.error(err);
     throw new Error(err);
   }
-  // .then((result) => {
-  //   return result;
-  // })
-  // .catch((error) => {
-  //   console.error(error);
-  //   throw new Error(error);
-  // });
 };
 services = {
   allUserBetsAsync,
