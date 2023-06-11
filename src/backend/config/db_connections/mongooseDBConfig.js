@@ -10,7 +10,6 @@ const connectDB = async () => {
   try {
     mongoConnection = await mongoose.connect(atlasURL);
     console.log("Connected to MongoDB Atlas via mongoose");
-    console.log(atlasURL);
   } catch (error) {
     console.log(error);
   }

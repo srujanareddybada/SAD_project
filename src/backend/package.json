@@ -25,6 +25,7 @@
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
+    "pug": "^3.0.2",
     "sequelize": "^6.31.1",
     "socket.io": "^4.6.2",
     "swagger-jsdoc": "^6.2.8",
