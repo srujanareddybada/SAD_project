@@ -13,6 +13,9 @@
  *           description: The return amount for a successful bet
  *         betEvent:
  *           type: object
+ *           description: bet odd details
+ *         Match:
+ *           type: object
  *           description: Match details associated with the bet
  *         outcome:
  *           $ref: '#/components/schemas/BetOutcomeEnum'

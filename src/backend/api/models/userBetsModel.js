@@ -8,7 +8,7 @@ var betEventSchema = new mongoose.Schema({
 
 var userBetsSchema = new mongoose.Schema(
   {
-    userId: { type: Number, required: true },
+    userId: { type: String, required: true },
     betAmount: { type: String, required: true },
     successBetReturnAmount: { type: String, required: false },
     outcome: { type: String, required: false },
