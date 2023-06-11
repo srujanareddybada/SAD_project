@@ -11,6 +11,7 @@ const {
 } = require("../controllers/userController");
 const { updateBlockUserAsync } = require("../controllers/adminUserController");
 
+//create registered user 
 router.post("/", createUser);
 
 //create user if registered udsing Oauth2 login
