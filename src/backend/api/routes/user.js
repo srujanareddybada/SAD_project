@@ -7,6 +7,7 @@ const {
   createUser,
   grantOauth2UserAccess,
   updateUserBalanceAsync,
+  getUserAsync,
 } = require("../controllers/userController");
 const { updateBlockUserAsync } = require("../controllers/adminUserController");
 
@@ -120,5 +121,29 @@ router.patch("/:id/balance", updateUserBalanceAsync);
  */
 
 router.patch("/:id/block", updateBlockUserAsync);
+
+/**
+ * @swagger
+ * /api/user/{id}:
+ *   get:
+ *     tags:
+ *      - User
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           minimum: 1
+ *     summary: returns current user
+ *     responses:
+ *       200:
+ *         description: fetched details from user!
+ *       404:
+ *         description: User not found!
+ *
+ */
+
+router.get("/:id", getUserAsync);
 
 module.exports = router;
