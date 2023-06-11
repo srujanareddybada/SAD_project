@@ -8,7 +8,8 @@ interface matchDetails{
     competitionEmblem: string,
     competitionName: string,
     hostingCountry: string,
-    matchDateandTime: string
+    matchDateandTime: string,
+    drawOdds: number
 }
 
 export default matchDetails

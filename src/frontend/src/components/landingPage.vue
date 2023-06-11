@@ -49,7 +49,7 @@
                                     <span class="text-blue-500 text-sm font-bold">Match time:</span>
                                     <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16) }}</span>
                                 </div>
-                                <div class="grid grid-cols-3 gap-1 w-full text-sm">
+                                <div class="grid grid-cols-4 gap-1 w-full text-sm">
 
                                     <div class="bg-gray-200 p-2 font-semibold">Teams (Home vs Away)</div>
                                     <div class="bg-gray-200 p-2 flex">
@@ -58,6 +58,7 @@
                                     <div class="bg-gray-200 p-2 flex">
                                         <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                     </div>
+                                    <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
                                     <div class="bg-gray-200 p-2 font-semibold">Winning Odds</div>
                                     <!--POP-UP TO PLACE BETS-->
                                     <div class="bg-gray-200 p-2">
@@ -80,6 +81,9 @@
                                                 </div>
                                             </teleport>
                                         </div>
+                                    </div>
+                                    <div class="bg-gray-200 p-2">
+                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.drawOdds }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +118,18 @@
                                 <span class="text-blue-500 text-sm font-bold">Match time:</span>
                                 <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16) }}</span>
                             </div>
-                            <div class="grid grid-cols-2 gap-1 w-full text-sm">
+                            <div class="grid grid-cols-3 gap-1 w-full text-sm">
 
                                 <div class="bg-gray-400 p-2 font-semibold">Home Team</div>
                                 <div class="bg-gray-400 p-2 font-semibold">Away Team</div>
+                                <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
                                 <div class="bg-gray-200 p-2 flex">
                                     <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{ matchDetail.homeTeamName }}
                                 </div>
                                 <div class="bg-gray-200 p-2 flex">
                                     <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                 </div>
+                                <div class="bg-gray-200 p-2 flex"></div>
                                 <!--POP-UP TO PLACE BETS-->
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
@@ -144,6 +150,9 @@
                                             </div>
                                         </teleport>
                                     </div>
+                                </div>
+                                <div class="bg-gray-200 p-2">
+                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.drawOdds }}</button>
                                 </div>
                             </div>
                         </div>

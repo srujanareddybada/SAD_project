@@ -45,7 +45,7 @@
                                 <span class="text-blue-500 text-sm font-bold">Match time:</span> 
                                 <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16) }}</span>
                             </div>
-                            <div class="grid grid-cols-3 gap-1 w-full text-sm">
+                            <div class="grid grid-cols-4 gap-1 w-full text-sm">
     
                                 <div class="bg-gray-200 p-2 font-semibold">Teams (Home vs Away)</div>
                                 <div class="bg-gray-200 p-2 flex">
@@ -54,9 +54,11 @@
                                 <div class="bg-gray-200 p-2 flex">
                                     <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
                                 </div>
+                                <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
                                 <div class="bg-gray-200 p-2 font-semibold">Winning Odds</div>
                                 <div class="bg-gray-200 p-2">{{ matchDetail.homeTeamWinningOdds }}</div>
                                 <div class="bg-gray-200 p-2">{{ matchDetail.awayTeamWinningOdds }}</div>
+                                <div class="bg-gray-200 p-2">{{ matchDetail.drawOdds }}</div>
                             </div>
                         </div>
                     </div>
@@ -116,6 +118,7 @@
                 await axios.get("/api/bets")
                     .then((res) => {
                         let result = res.data;
+                        console.log(result);
                         for (let i = 0; i < result.length; i++) {
                             //for matchDetails Array
                             let awayTeamWinningOdds: number = result[i].AwayTeam_WinningOdds;
@@ -128,6 +131,7 @@
                             let competitionName: string = result[i].competition.name;
                             let hostingCountry: string = result[i].area.name;
                             let matchDateandTime: string = result[i].utcDate;
+                            let drawOdds: number = result[i].Draw_MatchOdds;
                             this.matchDetailsArray.push({
                                 awayTeamWinningOdds,
                                 homeTeamWinningOdds,
@@ -138,7 +142,8 @@
                                 competitionEmblem,
                                 competitionName,
                                 hostingCountry,
-                                matchDateandTime
+                                matchDateandTime,
+                                drawOdds
                             })
                             //for countryDetails Array
                             let countryName: string = result[i].area.name;
