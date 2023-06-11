@@ -277,6 +277,10 @@ export default defineComponent({
         }
     },
     mounted() {
+        let userName =localStorage.getItem("full-name");
+        if(!userName){
+            return this.$router.push({name:'loginPage'})
+        }
         this.loadCompleteData();
         this.isUserBlockedFunc()
         //Once a user logs in, get the whole object. Use it for localStorage, isAdmin, isBlocked, name in header also

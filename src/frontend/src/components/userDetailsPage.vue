@@ -65,6 +65,10 @@ export default defineComponent({
         }
     },
     mounted() {
+        let userName =localStorage.getItem("full-name");
+        if(!userName){
+            return this.$router.push({name:'loginPage'})
+        }
         //Get email either from  localstorage or vuex
         //this.loadUserDetails();
     }
