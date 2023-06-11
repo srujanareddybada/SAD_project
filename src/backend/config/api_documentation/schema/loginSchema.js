@@ -5,7 +5,7 @@
  *     Login:
  *       type: object
  *       properties:
- *         username:
+ *         email:
  *           type: string
  *           description: user login
  *         password:
