@@ -9,6 +9,8 @@ const {
   updateUserBalanceAsync,
 } = require("../controllers/userController");
 
+const { getAllUsersAsync } = require("../controllers/adminUserController");
+
 router.post("/", createUser);
 
 //create user if registered udsing Oauth2 login
@@ -91,5 +93,21 @@ router.post("/:id/bets", controller.createBetAsync);
  */
 
 router.patch("/:id/balance", updateUserBalanceAsync);
+
+/**
+ * @swagger
+ * /api/user:
+ *   get:
+ *     tags:
+ *      - Admin
+ *      - Users
+ *     summary: Get all users for admin
+ *     responses:
+ *       200:
+ *         description: successfully fetched users
+ *       404:
+ *         description: Users not found!
+ */
+router.get("/", getAllUsersAsync);
 
 module.exports = router;
