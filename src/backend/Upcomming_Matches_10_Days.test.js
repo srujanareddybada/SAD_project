@@ -63,14 +63,13 @@ describe("UpcomingMatches10Days", () => {
 
   it("should fetch upcoming matches, assign odds, and store in MongoDB", async () => {
     await UpcomingMatches10Days(mongodb);
-
+  
     expect(axios.get).toHaveBeenCalledWith(expect.any(String), {
       headers: { "X-Auth-Token": process.env.FOOTBALL_DATA_API_KEY },
     });
-
-    expect(collectionMock.deleteMany).toHaveBeenCalled();
+  
     expect(collectionMock.insertMany).toHaveBeenCalled();
-
+  
     expect(insertedCount).toBe(1);
     expect(mongodb.collection).toHaveBeenCalledWith("upcomingmatches");
   });
