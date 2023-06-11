@@ -16,7 +16,8 @@ const { connectDB } = require("./config/db_connections/mongooseDBConfig");
 
 var authRouter = require("./api/routes/auth");
 var indexRouter = require("./api/routes/index");
-var usersRouter = require("./api/routes/user");
+var usersRouter = require("./api/routes/users");
+var userRouter = require("./api/routes/user");
 var betsRouter = require("./api/routes/bets");
 var liveRouter = require("./api/routes/liveMatchSimulation");
 var loginRouter = require("./api/routes/login");
@@ -52,7 +53,8 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/bets", betsRouter);
-app.use("/api/user", usersRouter);
+app.use("/api/user", userRouter);
+app.use("/api/users", usersRouter);
 app.use("/api/live", liveRouter);
 app.use("/api/login", loginRouter);
 
