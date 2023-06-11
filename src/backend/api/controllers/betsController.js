@@ -6,12 +6,12 @@ var router = express.Router();
 const getAllBets = async (req, res, next) => {
   try {
     const filters = {};
-    const { isLive } = req.query;
+    const { isLive, page, limit } = req.query;
 
     if (isLive) {
       filters.isLive = isLive;
     }
-    var result = await services.Allbets(filters);
+    var result = await services.Allbets(filters, page, limit);
     console.log(result);
     res.status(200).json(result);
   } catch (err) {

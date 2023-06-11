@@ -16,6 +16,16 @@ var router = express.Router();
  *         schema:
  *           type: boolean
  *         description: Filter matches by Live
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: number
+ *         description: Filter pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: number
+ *         description: Filter pagination
  *     responses:
  *       200:
  *         description: A list of bets
