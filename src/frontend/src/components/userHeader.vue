@@ -41,6 +41,7 @@ export default defineComponent({
     },
     methods:{
         backToHomePage(){
+            localStorage.clear();
             return this.$router.push({name:'homePage'})
         },
         currentBetsPage(){
