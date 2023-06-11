@@ -88,7 +88,6 @@
   </footer>
 </template>
 
-
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
@@ -120,7 +119,10 @@ export default defineComponent({
       });
     },
     async login() {
-      let hashPassword = await bcrpyt.hash(this.password, salt);
+      let hashPassword = await bcrpyt.hash(
+        this.password,
+        "$2a$10$4Bla8tqMJnGX0aG9JAiHiu"
+      );
 
       await axios
         .post("/api/login", {

@@ -174,7 +174,10 @@ export default defineComponent({
       //let user = await axios.get("/api/fetchuserdetails/"+this.email);
       if (this.isValidEmail(this.email)) {
         if (this.password === this.reenterpassword) {
-          let hashPassword = await bcrpyt.hash(this.password, salt);
+          let hashPassword = await bcrpyt.hash(
+            this.password,
+            "$2a$10$4Bla8tqMJnGX0aG9JAiHiu"
+          );
           await axios
             .post("/api/user", {
               fullname: this.fullName,
