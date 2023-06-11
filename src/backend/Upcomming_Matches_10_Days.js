@@ -77,7 +77,7 @@ async function UpcomingMatches10Days(mongodb) {
     });
 
     // Delete existing documents in the collection
-    await mongodb.collection("upcomingmatches").deleteMany({});
+    // await mongodb.collection("upcomingmatches").deleteMany({});
 
     // Store the filtered matches with odds in MongoDB
     const result = await mongodb
