@@ -10,6 +10,12 @@ var router = express.Router();
  *      - Bets
  *     summary: Get all betting events
  *     description: Retrieve a list of all events
+ *     parameters:
+ *       - in: query
+ *         name: isLive
+ *         schema:
+ *           type: boolean
+ *         description: Filter matches by Live
  *     responses:
  *       200:
  *         description: A list of bets
