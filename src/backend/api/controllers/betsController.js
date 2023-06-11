@@ -4,9 +4,14 @@ var services = require("../services/betsService");
 var router = express.Router();
 
 const getAllBets = async (req, res, next) => {
-  mongodb = req.app.get("mongodb");
   try {
-    var result = await services.Allbets(mongodb);
+    const filters = {};
+    const { isLive } = req.query;
+
+    if (isLive) {
+      filters.isLive = isLive;
+    }
+    var result = await services.Allbets(filters);
     console.log(result);
     res.status(200).json(result);
   } catch (err) {
