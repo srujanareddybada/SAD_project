@@ -18,7 +18,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {
+    defineComponent
+} from 'vue'
 import userHeader from './userHeader.vue'
 import axios from 'axios'
 
@@ -30,7 +32,8 @@ export default defineComponent({
             email: ''as string,
             dob: ''as string, //keep it string if we are not going to edit
             accBalance: 0 as number,
-            showDisabledElements: true
+            showDisabledElements: true,
+            sessionTk: ''as string | null
         }
     },
     components: {
@@ -38,7 +41,13 @@ export default defineComponent({
     },
     methods: {
         async loadUserDetails() {
-            await axios.get("/api/userdetails/" + this.email)
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
+            await axios.get("/api/userdetails/" + this.email, {
+                    headers
+                })
                 .then((res) => {
                     console.log(res);
                 })
@@ -51,9 +60,15 @@ export default defineComponent({
         },
         async saveUserChanges() {
             this.showDisabledElements = true;
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
             await axios.post("/api/newaccbalance/", {
                     email: this.email,
                     accountbalance: this.accBalance
+                }, {
+                    headers
                 })
                 .then((res) => {
                     console.log(res);
@@ -65,6 +80,14 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.sessionTk = localStorage.getItem("sessiontoken");
+        let userName = localStorage.getItem("full-name");
+        if (!userName) {
+            return this.$router.push({
+                name: 'loginPage'
+            })
+        }
+
         //Get email either from  localstorage or vuex
         //this.loadUserDetails();
     }

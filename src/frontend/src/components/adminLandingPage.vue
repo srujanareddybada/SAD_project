@@ -47,7 +47,7 @@ export default defineComponent({
     name: 'adminLandingComp',
     data() {
         return {
-            
+            sessionTk: ''as string | null
         }
     },
     components: {
@@ -55,7 +55,11 @@ export default defineComponent({
     },
     methods: {
         async getAllUserDetails(){
-            await axios.get("/api/getalluserdetails")
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
+            await axios.get("/api/getalluserdetails",{headers})
             .then((res)=>{
                 console.log(res);
             })
@@ -64,9 +68,13 @@ export default defineComponent({
             })
         },
         async blockUser(userEmail:string){
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
             await axios.post("/api/blockuser",{
                 email: userEmail
-            })
+            },{headers})
             .then((res)=>{
                 //alert('User blocked succesfully!');
                 console.log(res);
@@ -79,6 +87,11 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.sessionTk = localStorage.getItem("sessiontoken");
+        let userName =localStorage.getItem("full-name");
+        if(!userName){
+            return this.$router.push({name:'loginPage'})
+        }
         //this.getAllUserDetails();
     },
 })

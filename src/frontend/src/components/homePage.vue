@@ -197,7 +197,7 @@ export default defineComponent({
         .get("/api/bets")
         .then((res) => {
           let result = res.data.matches;
-          console.log(result);
+          //console.log(result);
           for (let i = 0; i < result.length; i++) {
             //for matchDetails Array
             let awayTeamWinningOdds: number = result[i].AwayTeam_WinningOdds;
@@ -256,6 +256,19 @@ export default defineComponent({
     },
   },
   mounted() {
+    let isAdmin = localStorage.getItem('isAdmin');
+        if (isAdmin != null) {
+            isAdmin = isAdmin.substring(1, (isAdmin.length - 1));
+            if (isAdmin == 'true') {
+                return this.$router.push({
+                    name: "adminLandingPage"
+                })
+            } else {
+                return this.$router.push({
+                    name: "landingPage"
+                })
+            }
+        }
     this.getUpcomingMatchList();
   },
 });

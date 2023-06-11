@@ -1,41 +1,64 @@
-const services = require("../../api/services/betsService");
+const { Allbets } = require('./betsService');
+const { Match } = require('../models/MatchSchema');
 
-describe("Allbets", () => {
-  let dbMock;
+jest.mock('../models/MatchSchema');
 
-  beforeEach(() => {
-    dbMock = {
-      collection: jest.fn().mockReturnThis(),
-      find: jest.fn().mockReturnThis(),
-      toArray: jest.fn(),
-    };
+describe('Allbets', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("should retrieve upcoming matches for the next 10 days", async () => {
-    const mockMatches = [{ utcDate: "2023-06-09" }, { utcDate: "2023-06-10" }];
+  it('should retrieve upcoming matches for the next 10 days', async () => {
+    const filters = {
+      utcDate: { $gte: new Date() }, // Example: filter for matches with UTC date greater than or equal to the current date
+      status: 'SCHEDULED', // Example: filter for scheduled matches only
+    };
+    const page = 1;
+    const limit = 30;
+    const mockMatches = [{ utcDate: '2023-06-09' }, { utcDate: '2023-06-10' }];
 
-    dbMock.toArray.mockResolvedValue(mockMatches);
-
-    const result = await services.Allbets(dbMock);
-
-    expect(dbMock.collection).toHaveBeenCalledWith("upcomingmatches");
-    expect(dbMock.find).toHaveBeenCalledWith({
-      utcDate: { $gt: expect.any(String) },
+    Match.find.mockReturnValue({
+      skip: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockResolvedValue(mockMatches),
     });
-    expect(dbMock.toArray).toHaveBeenCalled();
-    expect(result).toEqual(mockMatches);
+    Match.countDocuments.mockResolvedValue(mockMatches.length);
+
+    const expectedResponse = {
+      count: mockMatches.length,
+      page,
+      limit,
+      matches: mockMatches,
+    };
+
+    const response = await Allbets(filters, page, limit);
+
+    expect(Match.find).toHaveBeenCalledWith(filters);
+    expect(Match.find().skip).toHaveBeenCalledWith((page - 1) * limit);
+    expect(Match.find().limit).toHaveBeenCalledWith(limit);
+    expect(Match.countDocuments).toHaveBeenCalledWith(filters);
+    expect(response).toEqual(expectedResponse);
   });
 
   it("should use today's date to filter upcoming matches", async () => {
-    const mockMatches = [{ utcDate: "2023-06-09" }, { utcDate: "2023-06-10" }];
+    const filters = {
+      utcDate: { $gte: new Date() }, // Example: filter for matches with UTC date greater than or equal to the current date
+      status: 'SCHEDULED', // Example: filter for scheduled matches only
+    };
+    const page = 1;
+    const limit = 30;
+    const mockMatches = [{ utcDate: '2023-06-09' }, { utcDate: '2023-06-10' }];
 
-    dbMock.toArray.mockResolvedValue(mockMatches);
+    Match.find.mockReturnValue({
+      skip: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockResolvedValue(mockMatches),
+    });
+    Match.countDocuments.mockResolvedValue(mockMatches.length);
 
-    const result = await services.Allbets(dbMock);
+    const response = await Allbets(filters, page, limit);
 
-    const todayDate = new Date().toISOString().split("T")[0];
-
-    expect(dbMock.find).toHaveBeenCalledWith({ utcDate: { $gt: todayDate } });
-    expect(result).toEqual(mockMatches);
+    expect(Match.find).toHaveBeenCalledWith(expect.objectContaining({ utcDate: { $gte: expect.any(Date) } }));
+    // other expectations...
   });
+
+ 
 });

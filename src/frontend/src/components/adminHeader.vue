@@ -14,7 +14,7 @@
             <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-2" id="mobile-menu-2">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-4 lg:mt-0">
                     <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="adminLandingPage()" >Home</button></li>
-                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="adminDetailsPage()" >Name</button></li>
+                    <li><button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="adminDetailsPage()" >{{userName}}</button></li>
                     <li>
                     <button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-1 rounded" type="button" v-on:click="backToHomePage()">Log out</button>
                     </li>
@@ -31,7 +31,7 @@ export default defineComponent({
     name:'adminHeaderComp',
     data(){
         return{
-            
+            userName:'' as string
         }
     },
     props:{
@@ -45,7 +45,15 @@ export default defineComponent({
             return this.$router.push({name:'adminDetailsPage'})
         },
         backToHomePage(){
+            localStorage.clear();
             return this.$router.push({name:'homePage'})
+        }
+    },
+    mounted() {
+        let userInfo = localStorage.getItem("full-name");
+        if(userInfo != null){
+            userInfo = userInfo.substring(1, (userInfo.length - 1));
+            this.userName = userInfo;
         }
     }
 })

@@ -10,6 +10,7 @@ describe('getAllBets', () => {
 
     // Mock the Express request and response objects
     const req = {
+      query: { isLive: true }, // Provide the isLive query parameter
       app: {
         get: jest.fn().mockReturnValue(mongodb),
       },
@@ -24,7 +25,7 @@ describe('getAllBets', () => {
     await betController.getAllBets(req, res, next);
 
     // Check if the services.Allbets function was called with the correct argument
-    expect(services.Allbets).toHaveBeenCalledWith(mongodb);
+    expect(services.Allbets).toHaveBeenCalledWith({ isLive: true }, undefined, undefined);
 
     // Check if the response status and JSON methods were called with the correct arguments
     expect(res.status).toHaveBeenCalledWith(200);
@@ -39,6 +40,7 @@ describe('getAllBets', () => {
 
     // Mock the Express request and response objects
     const req = {
+      query: { isLive: true }, // Provide the isLive query parameter
       app: {
         get: jest.fn().mockReturnValue(mongodb),
       },
@@ -53,7 +55,7 @@ describe('getAllBets', () => {
     await betController.getAllBets(req, res, next);
 
     // Check if the services.Allbets function was called with the correct argument
-    expect(services.Allbets).toHaveBeenCalledWith(mongodb);
+    expect(services.Allbets).toHaveBeenCalledWith({ isLive: true }, undefined, undefined);
 
     // Check if the response status and JSON methods were called with the correct arguments
     expect(res.status).toHaveBeenCalledWith(500);
