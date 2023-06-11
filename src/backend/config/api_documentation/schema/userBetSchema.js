@@ -54,3 +54,15 @@
  *           type: string
  *           description: The amount of the bet
  */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UserBlocked:
+ *       type: object
+ *       properties:
+ *         blocked:
+ *           type: boolean
+ *           description: to block (true) or unblock (false) the user
+ */

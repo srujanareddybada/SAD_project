@@ -8,8 +8,7 @@ const {
   grantOauth2UserAccess,
   updateUserBalanceAsync,
 } = require("../controllers/userController");
-
-const { getAllUsersAsync } = require("../controllers/adminUserController");
+const { updateBlockUserAsync } = require("../controllers/adminUserController");
 
 router.post("/", createUser);
 
@@ -96,18 +95,30 @@ router.patch("/:id/balance", updateUserBalanceAsync);
 
 /**
  * @swagger
- * /api/user:
- *   get:
+ * /api/user/{id}/block:
+ *   patch:
  *     tags:
  *      - Admin
- *      - Users
- *     summary: Get all users for admin
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *           minimum: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserBlocked'
+ *     summary: update block status
+ *     description: update block status
  *     responses:
  *       200:
- *         description: successfully fetched users
- *       404:
- *         description: Users not found!
+ *         description: block status updated!
  */
-router.get("/", getAllUsersAsync);
+
+router.patch("/:id/block", updateBlockUserAsync);
 
 module.exports = router;

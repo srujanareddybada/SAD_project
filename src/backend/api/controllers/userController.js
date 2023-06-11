@@ -40,8 +40,8 @@ const updateUserBalanceAsync = async (req, res) => {
     });
 };
 
+// Gets current user
 const getUserAsync = async (req, res) => {
-  const { balance } = req.body;
   var docId = new ObjectId(req.params.id);
   console.log(req.params.id);
 
