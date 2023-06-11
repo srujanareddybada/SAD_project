@@ -48,7 +48,8 @@ export default defineComponent({
     name:'historyBetsComp',
     data(){
         return{
-            userBetHistoryDetailsArray: [] as betDetails[]
+            userBetHistoryDetailsArray: [] as betDetails[],
+            sessionTk: ''as string | null,
         }
     },
     components:{
@@ -56,7 +57,11 @@ export default defineComponent({
     },
     methods:{
         async getBetHistoryData(){
-            await axios.get("/api/betshistory")
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
+            await axios.get("/api/betshistory",{headers})
             .then((res)=>{
                 console.log(res);
                 //this.userBetHistoryDetailsArray.push(res);
@@ -67,6 +72,7 @@ export default defineComponent({
         }
     },
     mounted(){
+        this.sessionTk = localStorage.getItem("sessiontoken");
         let userName =localStorage.getItem("full-name");
         if(!userName){
             return this.$router.push({name:'loginPage'})

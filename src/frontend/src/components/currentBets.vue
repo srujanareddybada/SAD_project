@@ -48,6 +48,7 @@ export default defineComponent({
     name: 'currentBetsComp',
     data() {
         return {
+            sessionTk: ''as string | null,
             userCurrentBetDetailsArray: [] as betDetails[]
             //Can store this page's fetched data into Vuex and use it in betHistory page? or write another get request in betHistory page
         }
@@ -57,7 +58,11 @@ export default defineComponent({
     },
     methods: {
         async getCurrentBetData() {
-            await axios.get("/api/currentbets")
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
+            await axios.get("/api/currentbets",{headers})
                 .then((res) => {
                     console.log(res);
                     //this.userCurrentBetDetailsArray.push(res);
@@ -68,6 +73,7 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.sessionTk = localStorage.getItem("sessiontoken");
         let userName =localStorage.getItem("full-name");
         if(!userName){
             return this.$router.push({name:'loginPage'})

@@ -26,7 +26,8 @@ export default defineComponent({
             email: ''as string,
             dob: ''as string,
             activeUserCount: 0 as number,
-            blockedUserCount: 0 as number
+            blockedUserCount: 0 as number,
+            sessionTk: ''as string | null
         }
     },
     components: {
@@ -34,7 +35,11 @@ export default defineComponent({
     },
     methods:{
         async loadAdminDetails(){
-            await axios.get("/api/userdetails/" + this.email)
+            const headers = {
+                'Authorization': `Bearer ${this.sessionTk}`,
+                'Content-Type': 'application/json',
+            };
+            await axios.get("/api/userdetails/" + this.email,{headers})
             .then((res)=>{
                 console.log(res);
             })
@@ -44,6 +49,7 @@ export default defineComponent({
         }
     },
     mounted() {
+        this.sessionTk = localStorage.getItem("sessiontoken");
         let userName =localStorage.getItem("full-name");
         if(!userName){
             return this.$router.push({name:'loginPage'})
