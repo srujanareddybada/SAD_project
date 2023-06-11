@@ -6,7 +6,7 @@ COPY package*.json  ./
 
 RUN npm install
 
-COPY . src/frontend/package.json
+COPY . src/frontend/
 
 CMD [ "npm" , "run", "serve" ]
 
@@ -16,9 +16,9 @@ COPY package*.json  ./
 
 RUN npm install
 
-COPY . src/backend/package.json
+COPY . src/backend/
 
-CMD [ "node" , "app.js" ]
+CMD [ "node" , "./bin/www" ]
 
 ENV PORT=8080
 
