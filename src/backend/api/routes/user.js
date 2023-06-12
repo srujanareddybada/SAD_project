@@ -15,7 +15,7 @@ const {
 } = require("../controllers/userController");
 const { updateBlockUserAsync } = require("../controllers/adminUserController");
 
-//create registered user 
+//create registered user
 router.post("/", createUser);
 
 //create user if registered udsing Oauth2 login
@@ -107,6 +107,8 @@ router.patch("/:id/balance", updateUserBalanceAsync);
  * @swagger
  * /api/user/{id}/block:
  *   patch:
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Admin
  *     parameters:
@@ -129,7 +131,7 @@ router.patch("/:id/balance", updateUserBalanceAsync);
  *         description: block status updated!
  */
 
-router.patch("/:id/block", updateBlockUserAsync);
+router.patch("/:id/block", authAdminMiddleware, updateBlockUserAsync);
 
 /**
  * @swagger
