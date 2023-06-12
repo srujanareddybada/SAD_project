@@ -13,11 +13,11 @@ router.get("/", function (req, res, next) {
  *   put:
  *     tags:
  *      - Matches
- *     summary: Get all betting events
+ *     summary: Add new Matches from the external Api
  *     description: Retrieve a list of all events
  *     responses:
  *       200:
- *         description: A list of bets
+ *         description: A list of matches
  *
  */
 

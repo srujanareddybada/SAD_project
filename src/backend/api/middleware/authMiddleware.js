@@ -48,6 +48,9 @@ const authAdminMiddleware = (req, res, next) => {
 const authMiddleware = (req, res, next) => {
   // Get the token from the request headers, query parameters, or cookies
   try {
+    const headers = req.headers;
+    console.log(headers);
+
     const authorizationHeader = req.headers.authorization;
     console.log(authorizationHeader);
 
