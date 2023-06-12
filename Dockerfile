@@ -1,26 +1,26 @@
 FROM node:16
 
-WORKDIR /src
+WORKDIR /
 
 COPY Dockerfile .
 
 WORKDIR /src/backend
 
-COPY ./backend/package*.json  ./
+COPY ./src/backend/package*.json  ./
 
 RUN npm install
 
-COPY ./backend/ .
+COPY ./src/backend/ .
 
 CMD [ "npm" , "start" ]
 
 WORKDIR /src/frontend
 
-COPY ./frontend/package*.json  ./
+COPY ./src/frontend/package*.json  ./
 
 RUN npm install
 
-COPY ./frontend/ .
+COPY ./src/frontend/ .
 
 CMD [ "npm" , "run", "serve" ]
 
