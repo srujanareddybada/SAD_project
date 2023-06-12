@@ -15,7 +15,7 @@ function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
   } 
   
-app.get('/', authController.authenticateGoogle);
+app.get('/google', authController.authenticateGoogle);
 app.get('/google/callback', authController.handleGoogleCallback);
 
 app.get('/auth/failure', (req,res) => {

@@ -132,7 +132,7 @@ export default defineComponent({
         },
         async oAuthGoogle() {
             await axios
-                .get("/api/auth")
+                .get("/api/auth/google")
                 .then((res) => {
                     if (res.status == 200) {
                         this.$router.push({
