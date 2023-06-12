@@ -1,6 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var controller = require("../controllers/userBetsController");
+var {
+  authMiddleware,
+  authAdminMiddleware,
+} = require("../middleware/authMiddleware");
 
 //controller functions are imported
 const {
@@ -11,7 +15,7 @@ const {
 } = require("../controllers/userController");
 const { updateBlockUserAsync } = require("../controllers/adminUserController");
 
-//create registered user 
+//create registered user
 router.post("/", createUser);
 
 //create user if registered udsing Oauth2 login
@@ -21,7 +25,8 @@ router.post("/oauth2login", grantOauth2UserAccess);
  * @swagger
  * /api/user/{id}/bets:
  *   get:
-      
+ *    security:
+ *       - BearerAuth: []
  *    parameters:
  *      - name: id
  *        in: path
@@ -37,13 +42,16 @@ router.post("/oauth2login", grantOauth2UserAccess);
  *    tags:
  *      - User Bets
  */
-router.get(`/:id/bets`, controller.getAllUserBetsAsync);
+router.get(`/:id/bets`, authMiddleware, controller.getAllUserBetsAsync);
 
 /**
  * @swagger
  * /api/user/{id}/bets:
  *   post:
+ *     security:
+ *       - BearerAuth: []
  *     tags:
+ *      - Users
  *      - User Bets
  *     parameters:
  *       - name: id
@@ -65,7 +73,7 @@ router.get(`/:id/bets`, controller.getAllUserBetsAsync);
  *         description: resource created!
  */
 
-router.post("/:id/bets", controller.createBetAsync);
+router.post("/:id/bets", authMiddleware, controller.createBetAsync);
 
 /**
  * @swagger
@@ -99,6 +107,8 @@ router.patch("/:id/balance", updateUserBalanceAsync);
  * @swagger
  * /api/user/{id}/block:
  *   patch:
+ *     security:
+ *       - BearerAuth: []
  *     tags:
  *      - Admin
  *     parameters:
@@ -121,7 +131,7 @@ router.patch("/:id/balance", updateUserBalanceAsync);
  *         description: block status updated!
  */
 
-router.patch("/:id/block", updateBlockUserAsync);
+router.patch("/:id/block", authAdminMiddleware, updateBlockUserAsync);
 
 /**
  * @swagger

@@ -53,6 +53,8 @@ router.post("/", controller.loginAsync);
  *               properties:
  *                 sessionToken:
  *                   type: string
+ *                 refreshToken:
+ *                   type: string
  *       403:
  *         description: Invalid refresh token
  *         content:

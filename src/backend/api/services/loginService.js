@@ -35,7 +35,8 @@ const loginAsync = async (user) => {
     return undefined;
   } catch (err) {
     console.error(err);
-    return new Throw(err);
+    // return new Throw(err);
+    throw err;
   }
 };
 
