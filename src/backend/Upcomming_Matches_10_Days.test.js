@@ -1,3 +1,28 @@
+// 1. The code imports necessary modules such as axios, MongoClient, and dotenv.
+
+// 2. The code uses Jest's mocking functionality to mock the axios module.
+
+// 3. The config() function from dotenv is called to load environment variables from the .env file.
+
+// 4. The code defines test suites using describe for each of the functions: generateMoneylineOdds, generateDrawOdds, and 
+// UpcomingMatches10Days.
+
+// 5. The first test suite, generateMoneylineOdds, tests the function's ability to generate random numbers within a specified range. 
+// It asserts that the generated odds are within the expected range.
+
+// 6. The second test suite, generateDrawOdds, tests the function's ability to generate draw odds based on home team and away team odds. It asserts that the generated draw odds are greater than 100.
+
+// 7. The third test suite, UpcomingMatches10Days, includes multiple tests related to the UpcomingMatches10Days function. It mocks 
+// the axios.get function's resolved value with a sample response object containing matches. It also mocks the MongoClient.connect 
+// function and sets up a mock MongoDB collection.
+
+// 8. The first test in the UpcomingMatches10Days suite asserts that the function fetches upcoming matches, assigns odds, and stores 
+// the data in MongoDB. It checks if the axios.get function is called with the expected parameters, if the insertMany function is 
+// called on the collection, and if the inserted count is as expected.
+
+// 9. The second test in the UpcomingMatches10Days suite tests error handling. It mocks a rejected promise for the axios.get 
+// function, simulating an error. The test verifies that an error message is logged using console.error.
+
 const axios = require("axios");
 const { MongoClient } = require("mongodb");
 const { config } = require("dotenv");

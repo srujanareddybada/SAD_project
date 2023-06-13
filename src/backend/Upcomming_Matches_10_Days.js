@@ -1,3 +1,24 @@
+// This code file exports three functions related to generating odds and fetching/storing upcoming football matches using the 
+// MongoDB database:
+
+// 1. generateMoneylineOdds(): This function generates moneyline odds by generating two random numbers between 10 and 90, 
+// representing the probability of the home team and away team winning. The function calculates the reciprocal of these probabilities 
+// to get the odds and returns them in an array.
+
+// 2. generateDrawOdds(odds): This function generates the odds for a draw in a football match. It takes the array of home team and 
+// away team odds as input. If the difference between the odds is less than 0.1, it sets the draw odds to a high value, otherwise,
+//  it sets them to a low value. The function returns the draw odds.
+
+// 3. UpcomingMatches10Days(mongodb): This asynchronous function fetches upcoming football matches with a status of "timed" within 
+// a 10-day range. It uses the Football Data API to fetch the matches and filters them based on their status. For each match, it 
+// generates moneyline odds using generateMoneylineOdds() and draw odds using generateDrawOdds(). It then adds these odds to the match 
+// object and stores the filtered matches in the MongoDB collection named "upcomingmatches". The function logs the number of documents 
+// inserted or outputs an error message if the insertion fails.
+
+// The code also imports required modules, including MongoDB connection configurations, Axios for making HTTP requests, and the 
+// dotenv library for accessing environment variables.
+
+
 const {
   connectToMongoDB,
   getDB,
