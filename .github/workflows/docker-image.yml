@@ -17,6 +17,6 @@ jobs:
     - name: Build the Docker image
       run: |
         echo "${{ secrets.DOCKERPW }}" | docker login -u "srujanareddy" --password-stdin
-        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        docker build -t srujanareddy/sports-betting-app:latest .
     - name: Push the Docker image to the repository
       run: docker push srujanareddy/sports-betting-app:latest
