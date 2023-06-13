@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const authMiddleware = require('./authMiddleware');
+// const authMiddleware = require('./authMiddleware');
+const { authMiddleware, authAdminMiddleware } = require('./authMiddleware');
+require('dotenv').config();
 
 jest.mock('jsonwebtoken', () => ({
   verify: jest.fn(),
@@ -47,7 +49,7 @@ describe('authMiddleware', () => {
 
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.json).toHaveBeenCalledWith({
-      message: 'Token Invalid!',
+      message: 'No token found! Provide a valid token',
     });
     expect(next).not.toHaveBeenCalled();
   });
@@ -57,12 +59,18 @@ describe('authMiddleware', () => {
       id: 1,
       username: 'user1',
     };
-    req.headers['x-jet-token'] = 'valid-token';
-    jwt.verify.mockReturnValue(decodedPayload);
-
+    req.headers['authorization'] = 'Bearer valid-token';
+  
+    jwt.verify.mockImplementation((token, secret) => {
+      if (token === 'valid-token' && secret === process.env.SECRET) {
+        return decodedPayload;
+      }
+      throw new Error();
+    });
+  
     authMiddleware(req, res, next);
-
-    expect(jwt.verify).toHaveBeenCalledWith('valid-token', process.env.JWT_SECRET);
+  
+    expect(jwt.verify).toHaveBeenCalled();
     expect(req.user).toEqual(decodedPayload);
     expect(next).toHaveBeenCalled();
     expect(res.status).not.toHaveBeenCalled();
