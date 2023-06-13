@@ -9,7 +9,8 @@ interface matchDetails{
     competitionName: string,
     hostingCountry: string,
     matchDateandTime: string,
-    drawOdds: number
+    drawOdds: number,
+    isLive: boolean
 }
 
 export default matchDetails
