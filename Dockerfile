@@ -14,6 +14,8 @@ COPY ./src/backend/ .
 
 CMD [ "npm" , "start" ]
 
+CMD ["npx", "jest"]
+
 WORKDIR /src/frontend
 
 COPY ./src/frontend/package*.json  ./
