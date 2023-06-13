@@ -131,21 +131,24 @@ export default defineComponent({
                 });
         },
         async oAuthGoogle() {
-            await axios
-                .get("/api/auth/google")
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.$router.push({
-                            name: "landingPage",
-                        });
-                    } else {
-                        alert("Unsuccesfull");
-                    }
-                })
-                .catch(() => {
-                    alert("Server issue");
-                });
+        //    await axios
+        //         .get("/api/auth/google")
+        //         .then((res) => {
+        //             if (res.status == 200) {
+        //                 this.$router.push({
+        //                     name: "landingPage",
+        //                 });
+        //             } else {
+        //                 alert("Unsuccesfull");
+        //             }
+        //         })
+        //         .catch(() => {
+        //             alert("Server issue");
+        //         });
+        // this.$router.push({ path: 'http://localhost:3000/api/auth/google' })
+        window.location.href = 'http://localhost:3000/api/auth/google'
         },
+        
         signUpPage() {
             return this.$router.push({
                 name: "signUpPage",
