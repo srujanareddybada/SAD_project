@@ -54,6 +54,11 @@ const matchSchema = new mongoose.Schema({
       home: { type: Number },
       away: { type: Number },
     },
+    current: {
+      home: { type: Number },
+      away: { type: Number },
+    },
+    time: { type: Number },
   },
   odds: {
     msg: { type: String },
