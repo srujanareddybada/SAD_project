@@ -74,7 +74,7 @@ describe("createUser", () => {
 
     expect(User.create).not.toHaveBeenCalled();
 
-    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledWith(210);
     expect(res.json).toHaveBeenCalledWith({
       error: "User already exists",
     });
