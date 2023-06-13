@@ -82,7 +82,7 @@ const createUser = async (req, res) => {
         blocked,
       });
     } else {
-      return res.status(404).json({ error: "User already exists" });
+      return res.status(210).json({ error: "User already exists" });
     }
     console.log("logged in");
     const token = constructJwtToken(user);

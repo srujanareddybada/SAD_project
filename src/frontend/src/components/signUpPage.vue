@@ -118,7 +118,7 @@ export default defineComponent({
                                 return this.$router.push({
                                     name: "loginPage",
                                 });
-                            } else if (res.status == 404) {
+                            } else if (res.status == 210) {
                                 alert("User already exists, use a different email address");
                                 this.clearInputs();
                             } else {
@@ -132,6 +132,7 @@ export default defineComponent({
                         });
                 } else {
                     alert("Passwords do not match, please re-enter the correct password");
+                    this.password = "";
                     this.reenterpassword = "";
                 }
             } else {
