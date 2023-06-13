@@ -4,7 +4,17 @@ const express = require("express");
 const app = express();
 const router = require("./index"); // Replace with the path to your router file
 
+// Mock the MongoDB object
+const mockedMongoDB = {
+  collection: jest.fn().mockReturnThis(),
+  insertMany: jest.fn(),
+};
+
 // Mount the router on the app
+app.use((req, res, next) => {
+  req.app.set("mongodb", mockedMongoDB);
+  next();
+});
 app.use(router);
 
 describe("GET /", () => {
@@ -17,12 +27,11 @@ describe("GET /", () => {
 
 describe("PUT /api/matches", () => {
   it("should respond with 200 status code and 'Success' message", async () => {
-    // You may need to mock or provide a dummy `mongodb` object for testing
-    const mockedMongoDB = {};
-
-    const response = await request(app).put("/api/matches").set("mongodb", mockedMongoDB);
+    const response = await request(app).put("/api/matches");
     expect(response.status).toBe(200);
     expect(response.body).toBe("Success");
+    expect(mockedMongoDB.collection).toHaveBeenCalledWith("upcomingmatches");
+    expect(mockedMongoDB.insertMany).toHaveBeenCalled();
   });
 });
 

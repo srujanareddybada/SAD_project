@@ -83,7 +83,12 @@ async function UpcomingMatches10Days(mongodb) {
     const result = await mongodb
       .collection("upcomingmatches")
       .insertMany(matchesWithOdds);
-    console.log(`${result.insertedCount} documents inserted`);
+
+    if (result && result.insertedCount !== undefined) {
+      console.log(`${result.insertedCount} documents inserted`);
+    } else {
+      console.error("Failed to fetch and store data: Invalid result");
+    }
   } catch (error) {
     console.error("Failed to fetch and store data:", error);
   }
