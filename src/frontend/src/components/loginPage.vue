@@ -94,7 +94,6 @@ export default defineComponent({
                 })
                 .then((res) => {
                     let result = res.data;
-                    //console.log(result.user.admin);
                     if (result === null) {
                         alert("Account doesn't exist. Please enter proper details");
                         this.clearInputs();
@@ -128,6 +127,7 @@ export default defineComponent({
                     var response = err.response;
                     console.log(response);
                     alert(response.data.message);
+                    this.clearInputs();
                 });
         },
         async oAuthGoogle() {

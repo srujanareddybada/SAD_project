@@ -9,52 +9,80 @@ const UpcomingMatch = mongoose.model("upcomingmatches", matchSchema);
 
 async function runSimulatorService() {
   console.log("Live simulator service is running...");
-  await mongoose.connect(atlasURL);
 
+  setInterval(async () => {
+    console.log("Live simulator service is still running...");
+    updateMatch();
+  }, 5000);
+}
+
+async function updateMatch() {
   if (mongoose.connection.readyState === 1) {
     console.log("Mongoose is connected");
   } else {
     console.log("Mongoose is not connected");
+    await mongoose.connect(atlasURL);
   }
-
-  await UpcomingMatch.find()
+  await UpcomingMatch.find({ isLive: true })
     .then((matches) => {
-      // console.log("Upcoming live matches:", matches);
+      matches.forEach(async (match) => {
+        // match.score.current = {
+        //   home: 0,
+        //   away: 0,
+        // };
+        if (!match.score.time) {
+          match.score.time = 0;
+        }
+        var updatedmatch = simulateFootballMatch(match);
+        await UpcomingMatch.updateOne(
+          { _id: match._id },
+          { $set: { score: updatedmatch.score } }
+        );
+      });
+      //console.log("Upcoming live matches:", matches);
     })
     .catch((error) => {
       console.error("Failed to retrieve live matches:", error);
     });
-
-  setInterval(async () => {
-    console.log("Live simulator service is still running...");
-  }, 5000);
 }
 
-function simulateFootballMatch(homeScore, awayScore, timePassed) {
+function simulateFootballMatch(match) {
+  match.score.duration = "REGULAR";
+  match.score.time = match.score.time + 5;
+  console.log(match.score);
   const homeTeam = "Home";
   const awayTeam = "Away";
 
-  for (let minute = timePassed; minute <= 90; minute++) {
-    // Randomly determine if a goal is scored
-    const isGoalScored = Math.random() < 0.1;
-
-    if (isGoalScored) {
-      // Randomly determine which team scored
-      const scoringTeam = Math.random() < 0.5 ? homeTeam : awayTeam;
-
-      // Increment the score of the corresponding team
-      if (scoringTeam === homeTeam) {
-        homeScore++;
-        console.log(`Goal! ${homeTeam} scores at ${minute}'`);
-      } else {
-        awayScore++;
-        console.log(`Goal! ${awayTeam} scores at ${minute}'`);
-      }
-    }
+  if (match.score.time >= 90) {
+    match.score.time = 0;
+    match.score.current.home = 0;
+    match.score.halfTime.home = 0;
+    match.score.current.away = 0;
+    match.score.halfTime.away = 0;
+  }
+  // Check if it's halftime
+  if (match.score.time === 45) {
+    match.score.halfTime.home = match.score.current.home;
+    match.score.halfTime.away = match.score.current.away;
   }
 
-  console.log("Full Time");
-  console.log(`${homeTeam} ${homeScore} - ${awayScore} ${awayTeam}`);
+  // Randomly determine if a goal is scored
+  const isGoalScored = Math.random() < 0.3;
+
+  if (isGoalScored) {
+    // Randomly determine which team scored
+    const scoringTeam = Math.random() < 0.5 ? homeTeam : awayTeam;
+
+    // Increment the score of the corresponding team
+    if (scoringTeam === homeTeam) {
+      match.score.current.home++;
+      console.log(`Goal! Home scores at ${match.score.time}'`);
+    } else {
+      match.score.current.away++;
+      console.log(`Goal! Away scores at ${match.score.time}'`);
+    }
+  }
+  return match;
 }
 
 runSimulatorService();
