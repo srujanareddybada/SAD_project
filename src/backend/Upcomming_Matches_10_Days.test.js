@@ -36,7 +36,8 @@ jest.mock("axios");
 
 // Load environment variables from .env file
 config();
-
+//The first test suite, generateMoneylineOdds, tests the function's ability to generate random numbers within a specified range. 
+// It asserts that the generated odds are within the expected range.
 describe("generateMoneylineOdds", () => {
   it("should generate a random number within the specified range", () => {
     const [odds1, odds2] = generateMoneylineOdds();
@@ -46,7 +47,7 @@ describe("generateMoneylineOdds", () => {
     expect(odds2).toBeLessThanOrEqual(100);
   });
 });
-
+// The second test suite, generateDrawOdds, tests the function's ability to generate draw odds based on home team and away team odds. It asserts that the generated draw odds are greater than 100.
 describe("generateDrawOdds", () => {
   it("should generate draw odds based on home team and away team odds", () => {
     const homeTeamWinningOdds = 150;

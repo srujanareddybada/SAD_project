@@ -1,3 +1,26 @@
+// 1. The provided code file contains tests for the User model using the Mongoose library. It ensures that the model can save a new 
+// user successfully and handles validation errors for required fields.
+
+// 2. The code imports the necessary modules, including mongoose and the User model.
+
+// 3. The test suite is defined using describe for the "User model".
+
+// 4. The beforeAll hook mocks the mongoose.connect function to resolve a promise, simulating a successful database connection.
+
+// 5. The afterAll hook restores the original mongoose.connect function.
+
+// 6. The first test in the suite, "should save a new user successfully", creates a new User object with various properties. 
+// It mocks the save function of the user object to resolve a promise with the newly created user. The test then saves the user to 
+// the database and asserts that the save function was called once. It also checks if the saved user object has the same properties as 
+// the original user.
+
+// 7. The second test, "should require all the required fields", attempts to save a user object without providing any required fields. 
+// It expects an error of type mongoose.Error.ValidationError to be thrown. The test further checks that the error contains the 
+// required field error messages for username, password, email, fullname, and dob.
+
+// In summary, the code file tests the functionality and validation of the User model using Mongoose. It ensures that a new user 
+// can be saved successfully and handles validation errors for required fields.
+
 const mongoose = require("mongoose");
 const User = require("./userModel"); 
 
