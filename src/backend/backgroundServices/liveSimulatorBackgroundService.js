@@ -33,6 +33,7 @@ async function updateMatch() {
         if (!match.score.time) {
           match.score.time = 0;
         }
+        match.utcDate = new Date();
         var updatedmatch = simulateFootballMatch(match);
         await UpcomingMatch.updateOne(
           { _id: match._id },
