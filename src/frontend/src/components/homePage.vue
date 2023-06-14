@@ -112,6 +112,10 @@
                     <div class="border border-gray-600">
                         <div class="flex text-sm">
                             <img :src="matchDetail.competitionEmblem" width="30" height="30" /><b>{{ matchDetail.competitionName }}</b>
+                            <b class="ml-14">
+                                        <span class="inline-block w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>    
+                                        <span class="text-black">Live</span>
+                            </b>
                         </div>
                         <div>
                             <span class="text-blue-500 text-sm font-bold">Match day:</span>
@@ -201,7 +205,6 @@ export default defineComponent({
                 .get("/api/bets")
                 .then((res) => {
                     let result = res.data.matches;
-                    console.log(result[0].isLive);
                     for (let i = 0; i < result.length; i++) {
                         //for matchDetails Array
                         let awayTeamWinningOdds: number = result[i].AwayTeam_WinningOdds;
@@ -216,6 +219,7 @@ export default defineComponent({
                         let matchDateandTime: string = result[i].utcDate;
                         let drawOdds: number = result[i].Draw_MatchOdds;
                         let isLive: boolean = result[i].isLive;
+                        let matchID: string = result[i]._id;
                         this.matchDetailsArray.push({
                             awayTeamWinningOdds,
                             homeTeamWinningOdds,
@@ -228,7 +232,8 @@ export default defineComponent({
                             hostingCountry,
                             matchDateandTime,
                             drawOdds,
-                            isLive
+                            isLive,
+                            matchID
                         });
                         //for countryDetails Array
                         let countryName: string = result[i].area.name;
