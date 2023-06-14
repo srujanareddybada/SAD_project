@@ -15,7 +15,7 @@
             </div>
             <div>
                 <span class="text-blue-500 text-sm font-bold">Bet Money:</span>
-                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.betMoney }}</span>
+                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.betMoney }}€</span>
             </div>
             <div>
                 <span class="text-blue-500 text-sm font-bold">Other Team:</span>
@@ -23,15 +23,16 @@
             </div>
             <div>
                 <span class="text-blue-500 text-sm font-bold">Match Schedule:</span>
-                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.matchSchedule }}</span>
+                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.matchSchedule.slice(0,10)}} / </span>
+                <span class="text-sm font-semibold ml-1">{{userCurrentBetDetails.matchSchedule.slice(11, 16)}}</span>
             </div>
             <div>
                 <span class="text-blue-500 text-sm font-bold">Match Result:</span>
                 <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.matchResult }}</span>
             </div>
             <div>
-                <span class="text-blue-500 text-sm font-bold">Bet Result:</span>
-                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.betResult }}</span>
+                <span class="text-blue-500 text-sm font-bold">Possible Win Amount:</span>
+                <span class="text-sm font-semibold ml-1">{{ userCurrentBetDetails.betResult }}€</span>
             </div>
         </div>
     </div>
@@ -48,9 +49,9 @@ export default defineComponent({
     name: 'currentBetsComp',
     data() {
         return {
+            yourUserID: ''as string | undefined | null,
             sessionTk: ''as string | null,
             userCurrentBetDetailsArray: [] as betDetails[]
-            //Can store this page's fetched data into Vuex and use it in betHistory page? or write another get request in betHistory page
         }
     },
     components: {
@@ -62,10 +63,24 @@ export default defineComponent({
                 'Authorization': `Bearer ${this.sessionTk}`,
                 'Content-Type': 'application/json',
             };
-            await axios.get("/api/currentbets",{headers})
+            await axios.get(`/api/user/${this.yourUserID}/bets`, {headers})
                 .then((res) => {
-                    console.log(res);
-                    //this.userCurrentBetDetailsArray.push(res);
+                    let result = res.data;
+                    for(let i=0; i<result.length;i++){
+                        if(result[i].outcome == "scheduled"){
+                            let userID: string = result[i]._id;
+                            let competitionName: string = result[i].betEvent[0].competitionName;
+                            let bettedTeam: string = result[i].betEvent[0].bettedTeam;
+                            let betMoney: number = result[i].betAmount;
+                            let otherTeam: string = result[i].betEvent[0].otherTeam;
+                            let matchSchedule: string = result[i].betEvent[0].matchSchedule;
+                            let matchResult: string = result[i].outcome;
+                            let betResult: number = result[i].successBetReturnAmount;
+                            this.userCurrentBetDetailsArray.push({
+                                userID,competitionName,bettedTeam,betMoney,otherTeam,matchSchedule,matchResult,betResult
+                        })
+                        }
+                    }
                 })
                 .catch((err) => {
                     console.error(err)
@@ -73,12 +88,23 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.sessionTk = localStorage.getItem("sessiontoken");
-        let userName =localStorage.getItem("full-name");
-        if(!userName){
-            return this.$router.push({name:'loginPage'})
+        let userName = localStorage.getItem("full-name");
+        if (!userName) {
+            return this.$router.push({
+                name: 'loginPage'
+            })
         }
-        //this.getCurrentBetData()
+        let sessTk = localStorage.getItem("sessiontoken");
+        if(sessTk != null){
+            sessTk = sessTk.substring(1, (sessTk.length - 1));
+            this.sessionTk = sessTk;
+        }
+        let uID = localStorage.getItem("user-id");
+        if (uID != null) {
+            uID = uID.substring(1, (uID.length - 1));
+            this.yourUserID = uID;
+        }
+        this.getCurrentBetData()
     }
 })
 </script>

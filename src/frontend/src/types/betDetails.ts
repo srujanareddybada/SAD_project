@@ -1,5 +1,5 @@
 interface betDetails {
-    userID: number,
+    userID: string,
     competitionName: string,
     bettedTeam: string,
     betMoney: number,
