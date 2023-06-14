@@ -1,9 +1,9 @@
 <template>
   <div>
     <div>
-      <div :v-model="(yourUserID = userId)">
+      <!-- <div :v-model="(yourUserID = userId)">
         <b class="mr-14">User ID: </b>{{ userId }}
-      </div>
+      </div> -->
       <div :v-model="(compName = mObj.competitionName)">
         <b class="mr-4">Competition Name: </b> {{ mObj.competitionName }}
       </div>
@@ -25,12 +25,8 @@
           {{ mObj.homeTeamWinningOdds }}
         </div>
         <div class="flex">
-          <label><b>Your Bet On Home Team:</b> </label
-          ><input
-            type="number"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
-            v-model="yourBetMoney"
-          />
+          <label><b>Your Bet On Home Team:</b> </label>
+          <input type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2" v-model="yourBetMoney"/>
         </div>
         <button
           @click="handleBetOnHomeTeam"
@@ -83,7 +79,7 @@ export default defineComponent({
   name: "placeBetComp",
   data() {
     return {
-      yourUserID: 0 as number | undefined,
+      yourUserID: '' as string | undefined | null,
       compName: "" as string,
       hTeam: "" as string,
       aTeam: "" as string,
@@ -91,11 +87,11 @@ export default defineComponent({
       yourBetMoney: 0 as number,
       bettedHomeTeamOdd: 0 as number,
       bettedAwayTeamOdd: 0 as number,
-      sessionTk: "" as string | null,
+      sessionTk: "" as string | null
     };
   },
   props: {
-    userId: Number,
+    userId: String,
     teamType: Boolean,
     mObj: {
       type: Object as () => matchDetails,
@@ -104,69 +100,41 @@ export default defineComponent({
   },
   methods: {
     async handleBetOnHomeTeam() {
-      console.log(
-        `You with user ID: ${this.yourUserID} placed bet of €${
-          this.yourBetMoney
-        } on home team with winning odds ${
-          this.bettedHomeTeamOdd
-        } \nMore Details on match are as follows: \nCompetition name: ${
-          this.compName
-        } \nHome Team: ${this.hTeam} \nAway Team: ${
-          this.aTeam
-        } \nMatch Schedule: ${this.matchSch.slice(
-          0,
-          10
-        )} - ${this.matchSch.slice(11, 16)}`
-      );
       this.$emit("bet-modal-event", false);
-
       //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
       const headers = {
         Authorization: `Bearer ${this.sessionTk}`,
         "Content-Type": "application/json",
       };
       await axios
-        .post(
-          `/api/user/${this.yourUserID}/bets`,
+        .post(`/api/user/${this.yourUserID}/bets`,
           [
             {
-              compname: this.compName,
               betAmount: this.yourBetMoney,
-              betEvent: { odds: 1.23 } /* Add odds here (remove hardcoding) */,
-              successBetReturnAmount: 1.23 * this.yourBetMoney, // Add real odds
+              betEvent: { 
+                odds: this.bettedHomeTeamOdd, 
+                bettedTeam: this.hTeam,
+                otherTeam: this.aTeam,
+                competitionName: this.compName,
+                matchSchedule: this.matchSch
+              },
+              successBetReturnAmount: (this.bettedHomeTeamOdd * this.yourBetMoney).toFixed(2),
               outcome: "scheduled",
-              match: {}, // Add match object
-              //bettedteam: this.bettedHomeTeamOdd,
-              //otherteam: this.aTeam,
-              //matchsch: this.matchSch
+              match: {"_id": this.mObj.matchID}, 
             },
           ],
           { headers }
         )
         .then((res) => {
-          //alert('Your successfully placed your bet!');
+          alert('Your successfully placed your bet!');
           console.log(res);
         })
         .catch((err) => {
-          //alert('Failed to place your bet, please try again!')
+          alert('Failed to place your bet, please try again!')
           console.error(err);
         });
     },
     async handleBetOnAwayTeam() {
-      console.log(
-        `You with user ID: ${this.yourUserID} placed bet of €${
-          this.yourBetMoney
-        } on away team with winning odds ${
-          this.bettedAwayTeamOdd
-        } \nMore Details on match are as follows: \nCompetition name: ${
-          this.compName
-        } \nHome Team: ${this.hTeam} \nAway Team: ${
-          this.aTeam
-        } \nMatch Schedule: ${this.matchSch.slice(
-          0,
-          10
-        )} - ${this.matchSch.slice(11, 16)}`
-      );
       this.$emit("bet-modal-event", false);
       //HTTP POST REQUEST TO STORE BET DATA IN THE MONGODB COLLECTION USERBETS
       const headers = {
@@ -174,34 +142,50 @@ export default defineComponent({
         "Content-Type": "application/json",
       };
       await axios
-        .post(
-          "/api/placebet",
-          {
-            userid: this.yourUserID,
-            compname: this.compName,
-            betmoney: this.yourBetMoney,
-            bettedteam: this.bettedAwayTeamOdd,
-            otherteam: this.hTeam,
-            matchsch: this.matchSch,
-          },
+        .post(`/api/user/${this.yourUserID}/bets`,
+        [
+            {
+                betAmount: this.yourBetMoney,
+                betEvent: { 
+                odds: this.bettedAwayTeamOdd, 
+                bettedTeam: this.aTeam,
+                otherTeam: this.hTeam,
+                competitionName: this.compName,
+                matchSchedule: this.matchSch
+              },
+              successBetReturnAmount: (this.bettedAwayTeamOdd * this.yourBetMoney).toFixed(2),
+              outcome: "scheduled",
+              match: {"_id": this.mObj.matchID}, 
+            },
+          ],
           { headers }
         )
         .then((res) => {
-          //alert('Your successfully placed your bet!');
+          alert('Your successfully placed your bet!');
           console.log(res);
         })
         .catch((err) => {
-          //alert('Failed to place your bet, please try again!')
+          alert('Failed to place your bet, please try again!')
           console.error(err);
         });
     },
     cancelPlacingBet() {
       console.log("Bet cancelled");
       this.$emit("bet-modal-event", false);
-    },
+    }
   },
   mounted() {
-    this.sessionTk = localStorage.getItem("sessiontoken");
+    let sessTk = localStorage.getItem("sessiontoken");
+    if(sessTk != null){
+      sessTk = sessTk.substring(1, (sessTk.length - 1));
+      this.sessionTk = sessTk;
+    }
+    let uID = localStorage.getItem("user-id");
+    if(uID != null){
+      uID = uID.substring(1, (uID.length - 1));
+      this.yourUserID = uID;
+    }
+    
   },
 });
 </script>
