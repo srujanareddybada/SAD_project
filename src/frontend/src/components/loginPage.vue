@@ -102,6 +102,7 @@ export default defineComponent({
                             localStorage.setItem("user-id", JSON.stringify(result.user._id));
                             localStorage.setItem("full-name", JSON.stringify(result.user.fullname));
                             localStorage.setItem("email", JSON.stringify(result.user.email));
+                            localStorage.setItem("status", JSON.stringify(result.user.blocked));
                             localStorage.setItem("dob", JSON.stringify(result.user.dob).slice(0, 11));
                             localStorage.setItem("isAdmin", JSON.stringify(result.user.admin));
                             localStorage.setItem("refreshtoken", JSON.stringify(result.refreshToken));
