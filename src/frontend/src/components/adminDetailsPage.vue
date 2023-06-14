@@ -4,9 +4,9 @@
     <div class="userDetailsHeader">Full Name:</div>
     <div class="block w-full border p-2">{{ fullName }}</div>
     <div class="userDetailsHeader">Email:</div>
-    <div class="border p-2">{{ email }}</div>
+    <div class="block w-full border p-2">{{ email }}</div>
     <div class="userDetailsHeader">Date Of Birth:</div>
-    <div class="border p-2">{{ dob }}</div>
+    <div class="block w-full border p-2">{{ dob }}</div>
     <div class="userDetailsHeader">Total Active Users: </div>
     <div class="border p-2 bg-green-100">{{ activeUserCount }}</div>
     <div class="userDetailsHeader">Total Blocked Users: </div>
@@ -39,9 +39,17 @@ export default defineComponent({
                 'Authorization': `Bearer ${this.sessionTk}`,
                 'Content-Type': 'application/json',
             };
-            await axios.get("/api/userdetails/" + this.email,{headers})
+            await axios.get("/api/users",{headers})
             .then((res)=>{
-                console.log(res);
+                let result = res.data.users;
+                for(let i=0; i<result.length; i++){
+                    if(result[i].blocked == false){
+                        this.activeUserCount += 1
+                    }else{
+                        this.blockedUserCount += 1
+                    }
+                }
+                
             })
             .catch((err)=>{
                 console.error(err)
@@ -49,13 +57,29 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.sessionTk = localStorage.getItem("sessiontoken");
         let userName =localStorage.getItem("full-name");
         if(!userName){
             return this.$router.push({name:'loginPage'})
+        }else{
+            userName = userName.substring(1, (userName.length - 1));
+            this.fullName = userName;
         }
-        //Get email either from  localstorage or vuex
-        //this.loadAdminDetails();
+        let email = localStorage.getItem("email");
+        if(email != null){
+            email = email.substring(1, (email.length - 1));
+            this.email = email;
+        }
+        let dob  = localStorage.getItem("dob");
+        if(dob != null){
+            dob = dob.substring(1, (dob.length));
+            this.dob = dob;
+        }
+        let sessTk = localStorage.getItem("sessiontoken");
+        if(sessTk != null){
+            sessTk = sessTk.substring(1, (sessTk.length - 1));
+            this.sessionTk = sessTk;
+        }
+        this.loadAdminDetails();
     }
 })
 </script>
