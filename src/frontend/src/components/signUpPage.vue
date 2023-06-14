@@ -45,8 +45,7 @@
             <p class="mx-auto text-center block w-1/2 p-2.5 text-sm font-light text-gray-500 dark:text-gray-400">
                 --Or Login with--
             </p>
-            <button type="button" class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5">
-                Log in with Google</button><br />
+            <button type="button" class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5" v-on:click="oAuthGoogle()" >Log in with Google</button><br />
             <!-- <button
           type="button"
           class="mx-auto text-center block w-1/2 p-2.5 text-black bg-blue-300 hover:bg-primary-700 font-medium rounded-lg text-sm px-5 py-2.5"
@@ -177,6 +176,9 @@ export default defineComponent({
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         },
+       async oAuthGoogle(){
+            window.location.href = 'http://localhost:3000/api/auth/google'
+        }
     },
     mounted() {
         let isAdmin = localStorage.getItem('isAdmin');
