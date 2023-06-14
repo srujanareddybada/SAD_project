@@ -7,16 +7,17 @@
     <div class="w-1/5 bg-gray-200">
         <div class="flex h-10 bg-gray-200"></div>
         <div class="flex h-10 bg-gray-200"></div>
-        <div v-for="(countryDetail,i) in countryDetailsArray" :key="i">
+        <div v-for="(countryDetail, i) in countryDetailsArray" :key="i">
             <button class="text-white w-full bg-blue-400 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" v-on:click="SelectedCntUpMatchDetails(countryDetail.countryName)">
                 <div class="flex h-8">
-                    <img :src="countryDetail.flag" width="30" height="30" class="mr-2" /><b>{{ countryDetail.countryName }}</b>
+                    <img :src="countryDetail.flag" width="30" height="30" class="mr-2" /><b>{{ countryDetail.countryName
+                        }}</b>
                 </div>
             </button>
         </div>
     </div>
 
-    <div class="w-4/5 bg-red-200 container">
+    <div class="w-4/5 bg-gray-300 container">
         <!--SEARCH BAR-->
         <div class="flex h-13">
             <input type="text" class="p-2 border border-gray-300 rounded-l-md w-full" placeholder="Enter a team name..." v-model="searchTeam" />
@@ -36,27 +37,32 @@
                 </div>
                 <div class="flex">
                     <div v-for="(matchDetail, j) in matchDetailsArray" :key="j" class="flex-shrink-0">
-                        <div v-if="countryDetail.countryName === matchDetail.hostingCountry">
+                        <div v-if="countryDetail.countryName === matchDetail.hostingCountry && !(matchDetail.isLive)">
                             <div class="border border-gray-600">
                                 <div class="flex text-sm">
-                                    <img :src="matchDetail.competitionEmblem" width="30" height="30" /><b>{{ matchDetail.competitionName }}</b>
+                                    <img :src="matchDetail.competitionEmblem" width="30" height="30" /><b>{{
+                                            matchDetail.competitionName }}</b>
                                 </div>
                                 <div>
                                     <span class="text-blue-500 text-sm font-bold">Match day:</span>
-                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(0, 10) }}</span>
+                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(0,
+                                            10) }}</span>
                                 </div>
                                 <div>
                                     <span class="text-blue-500 text-sm font-bold">Match time:</span>
-                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16) }}</span>
+                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11,
+                                            16) }}</span>
                                 </div>
                                 <div class="grid grid-cols-4 gap-1 w-full text-sm">
 
                                     <div class="bg-gray-200 p-2 font-semibold">Teams (Home vs Away)</div>
                                     <div class="bg-gray-200 p-2 flex">
-                                        <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{ matchDetail.homeTeamName }}
+                                        <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{
+                                                matchDetail.homeTeamName }}
                                     </div>
                                     <div class="bg-gray-200 p-2 flex">
-                                        <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
+                                        <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{
+                                                matchDetail.awayTeamName }}
                                     </div>
                                     <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
                                     <div class="bg-gray-200 p-2 font-semibold">Winning Odds</div>
@@ -74,7 +80,8 @@
                                     </div>
                                     <div class="bg-gray-200 p-2">
                                         <div class="root">
-                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{
+                                                        matchDetail.awayTeamWinningOdds }}</button>
                                             <teleport to="body">
                                                 <div class="modal" v-if="showModal">
                                                     <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -83,7 +90,8 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-200 p-2">
-                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.drawOdds }}</button>
+                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{
+                                                    matchDetail.drawOdds }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -91,16 +99,15 @@
                         <div v-else></div>
                     </div>
                 </div>
-
                 <br />
             </div>
-
         </div>
 
         <!--DIV TO DISPLAY ONLY SELECTED COUNTRY'S UPCOMING MATCHES-->
         <div v-if="clickedCountryObject" v-show="showSelectedCntMatches">
             <div class="bg-green-200 h-8 flex border border-gray-300 justify-center container">
-                <img :src="clickedCountryObject.flag" width="30" height="30" /><b>{{ clickedCountryObject.countryName}}</b>
+                <img :src="clickedCountryObject.flag" width="30" height="30" /><b>{{
+                        clickedCountryObject.countryName }}</b>
             </div>
             <div class="grid grid-cols-2 gap-1">
                 <div v-for="(matchDetail, j) in clickedCntMatchDetailsArray" :key="j" class="flex-shrink-0">
@@ -108,15 +115,19 @@
                     <div v-if="matchDetail.hostingCountry === clickedCountryObject.countryName">
                         <div class="border border-gray-600">
                             <div class="flex text-sm">
-                                <img :src="matchDetail.competitionEmblem" width="30" height="30" /><b>{{ matchDetail.competitionName }}</b>
+                                <img :src="matchDetail.competitionEmblem" width="30" height="30" /><b>{{
+                                        matchDetail.competitionName }}</b>
                             </div>
                             <div>
                                 <span class="text-blue-500 text-sm font-bold">Match day:</span>
-                                <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(0, 10) }}</span>
+                                <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(0, 10)
+                                    }}</span>
                             </div>
                             <div>
                                 <span class="text-blue-500 text-sm font-bold">Match time:</span>
-                                <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16) }}</span>
+                                <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11, 16)
+                                    }}</span>
+
                             </div>
                             <div class="grid grid-cols-3 gap-1 w-full text-sm">
 
@@ -124,16 +135,19 @@
                                 <div class="bg-gray-400 p-2 font-semibold">Away Team</div>
                                 <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
                                 <div class="bg-gray-200 p-2 flex">
-                                    <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{ matchDetail.homeTeamName }}
+                                    <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{
+                                            matchDetail.homeTeamName }}
                                 </div>
                                 <div class="bg-gray-200 p-2 flex">
-                                    <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{ matchDetail.awayTeamName }}
+                                    <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{
+                                            matchDetail.awayTeamName }}
                                 </div>
                                 <div class="bg-gray-200 p-2 flex"></div>
                                 <!--POP-UP TO PLACE BETS-->
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.homeTeamWinningOdds }}</button>
+                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{
+                                                    matchDetail.homeTeamWinningOdds }}</button>
                                         <teleport to="body">
                                             <div class="modal" v-if="showModal">
                                                 <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -143,7 +157,8 @@
                                 </div>
                                 <div class="bg-gray-200 p-2">
                                     <div class="root">
-                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.awayTeamWinningOdds }}</button>
+                                        <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{
+                                                    matchDetail.awayTeamWinningOdds }}</button>
                                         <teleport to="body">
                                             <div class="modal" v-if="showModal">
                                                 <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
@@ -152,7 +167,8 @@
                                     </div>
                                 </div>
                                 <div class="bg-gray-200 p-2">
-                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType=false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{ matchDetail.drawOdds }}</button>
+                                    <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{
+                                                matchDetail.drawOdds }}</button>
                                 </div>
                             </div>
                         </div>
@@ -166,30 +182,103 @@
         </div>
 
         <!--DIV TO DISPLAY ALL LIVE MATCHES-->
-        <div v-show="showLiveMatches">
-            <p>No Live Matches!</p>
+        <div v-for="(countryDetail, i) in countryDetailsArray" :key="i" v-show="showLiveMatches">
+            <div class="overflow-x-scroll">
+                <div class="bg-green-200 h-8 flex border border-gray-300 justify-center container">
+                    <img :src="countryDetail.flag" width="30" height="30" /><b>{{ countryDetail.countryName }}</b>
+                </div>
+                <div class="flex">
+                    <div v-for="(matchDetail, j) in matchDetailsArray" :key="j" class="flex-shrink-0">
+                        <div v-if="countryDetail.countryName === matchDetail.hostingCountry && (matchDetail.isLive)">
+                            <div class="border border-gray-600">
+                                <div class="flex text-sm">
+                                    <img :src="matchDetail.competitionEmblem" width="30" height="30" />
+                                    <b>{{matchDetail.competitionName }}</b> 
+                                    <b class="ml-14">
+                                        <span class="inline-block w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>    
+                                        <span class="text-black">Live</span>
+                                    </b>
+                                </div>
+                                <div>
+                                    <span class="text-blue-500 text-sm font-bold">Match day:</span>
+                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(0,10) }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-blue-500 text-sm font-bold">Match time:</span>
+                                    <span class="text-sm font-semibold ml-1">{{ (matchDetail.matchDateandTime).slice(11,16) }}</span>
+                                </div>
+                                <div class="grid grid-cols-4 gap-1 w-full text-sm">
+
+                                    <div class="bg-gray-200 p-2 font-semibold">Teams (Home vs Away)</div>
+                                    <div class="bg-gray-200 p-2 flex">
+                                        <img :src="matchDetail.homeTeamCrest" width="10" height="10" />{{matchDetail.homeTeamName }}
+                                    </div>
+                                    <div class="bg-gray-200 p-2 flex">
+                                        <img :src="matchDetail.awayTeamCrest" width="10" height="10" />{{matchDetail.awayTeamName }}
+                                    </div>
+                                    <div class="bg-purple-200 p-2 font-semibold">Draw Odds</div>
+                                    <div class="bg-gray-200 p-2 font-semibold">Winning Odds</div>
+                                    <!--POP-UP TO PLACE BETS-->
+                                    <div class="bg-gray-200 p-2">
+                                        <div class="root">
+                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = true" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
+                                                {{ matchDetail.homeTeamWinningOdds }}</button>
+                                            <teleport to="body">
+                                                <div class="modal" v-if="showModal">
+                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                                </div>
+                                            </teleport>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-200 p-2">
+                                        <div class="root">
+                                            <button :disabled="isUserBlocked" v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">{{matchDetail.awayTeamWinningOdds }}</button>
+                                            <teleport to="body">
+                                                <div class="modal" v-if="showModal">
+                                                    <placeBetComp :mObj="teleportMatchDetail" :userId="userId" :teamType="teleportHomeTeamType" @bet-modal-event="handlePlaceBetEvent" />
+                                                </div>
+                                            </teleport>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-200 p-2">
+                                        <button disabled v-on:click="teleportMatchDetail = matchDetail; showModal = true; teleportHomeTeamType = false" class="text-gray-900 bg-gray-200 border border-gray-300 focus:outline-none hover:bg-purple-100 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 w-full">
+                                        {{matchDetail.drawOdds }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else></div>
+                    </div>
+                </div>
+                <br />
+            </div>
         </div>
 
         <!--DIV TO DISPLAY ONLY SELECTED COUNTRY LIVE MATCHES-->
+
     </div>
 </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {
+    defineComponent
+} from 'vue';
 import userHeader from './userHeader.vue';
 import countryDetails from '../types/countryDetails';
 import matchDetails from '../types/matchDetails';
 import placeBetComp from './placeBets.vue'
-import {useStore} from 'vuex';
+import {
+    useStore
+} from 'vuex';
 
 export default defineComponent({
     name: 'landingComp',
     data() {
         return {
-            userId: 1 as number,
+            userId: '' as string | null,
             searchTeam: ''as string,
-            teleportMatchDetail: {} as matchDetails,
+            teleportMatchDetail: {}as matchDetails,
             teleportHomeTeamType: true as boolean,
             countryDetailsArray: [] as countryDetails[],
             matchDetailsArray: [] as matchDetails[],
@@ -201,7 +290,7 @@ export default defineComponent({
             showSelectedCntLiveMatches: false,
             clickedCntMatchDetailsArray: [] as matchDetails[],
             showModal: false,
-            userBlockedMessage: '' as string,
+            userBlockedMessage: ''as string,
             isUserBlocked: false
 
         }
@@ -244,21 +333,21 @@ export default defineComponent({
         handlePlaceBetEvent(payload: boolean) {
             this.showModal = payload;
         },
-        resetFilter():void {
+        resetFilter(): void {
             this.searchTeam = '';
             this.loadCompleteData();
         },
-        loadCompleteData():void {
+        loadCompleteData(): void {
             this.countryDetailsArray = this.store.state.countryDetailsArray;
             this.matchDetailsArray = this.store.state.matchDetailsArray;
         },
-        loadFilteredData():void {
+        loadFilteredData(): void {
             let matchDetailsArrayForFilter: matchDetails[] = this.store.state.matchDetailsArray;
             let clickedCntMatchDetailsArrayForFilter: matchDetails[] = this.clickedCntMatchDetailsArray;
             this.matchDetailsArray = [];
             this.clickedCntMatchDetailsArray = [];
             if (this.clickedCntMatchDetailsArray.length > 0) {
-                this.clickedCntMatchDetailsArray = clickedCntMatchDetailsArrayForFilter.filter(matchDetail =>{
+                this.clickedCntMatchDetailsArray = clickedCntMatchDetailsArrayForFilter.filter(matchDetail => {
                     return matchDetail.homeTeamName == this.searchTeam || matchDetail.awayTeamName == this.searchTeam
                 })
             } else {
@@ -266,24 +355,28 @@ export default defineComponent({
                     return matchDetail.homeTeamName == this.searchTeam || matchDetail.awayTeamName == this.searchTeam;
                 })
             }
-        },
-        isUserBlockedFunc():void{
-            // // let blockedStatus = this.store.state.userObject.blocked;
-            // // if(blockedStatus){
-            //     this.isUserBlocked = true;
-            //     this.userBlockedMessage = 'You are banned from betting!'
-            // // }
-            console.log('object');
         }
     },
     mounted() {
-        let userName =localStorage.getItem("full-name");
-        if(!userName){
-            return this.$router.push({name:'loginPage'})
+        let userName = localStorage.getItem("full-name");
+        if (!userName) {
+            return this.$router.push({
+                name: 'loginPage'
+            })
+        }
+        let uID = localStorage.getItem("user-id");
+            if(uID != null){
+            uID = uID.substring(1, (uID.length - 1));
+            this.userId = uID;
+        }
+        let bStatus = localStorage.getItem('status');
+        if(bStatus != null){
+            this.isUserBlocked = JSON.parse(bStatus);
+            if(this.isUserBlocked){
+                this.userBlockedMessage = 'You are banned from betting!'
+            }
         }
         this.loadCompleteData();
-        this.isUserBlockedFunc()
-        //Once a user logs in, get the whole object. Use it for localStorage, isAdmin, isBlocked, name in header also
     },
     updated() {
         const searchDataElement = this.$refs.searchData as HTMLElement;

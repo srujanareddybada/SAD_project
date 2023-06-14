@@ -10,7 +10,8 @@ interface matchDetails{
     hostingCountry: string,
     matchDateandTime: string,
     drawOdds: number,
-    isLive: boolean
+    isLive: boolean,
+    matchID: string
 }
 
 export default matchDetails
