@@ -4,6 +4,10 @@ const { matchSchema } = require("./MatchSchema");
 var betEventSchema = new mongoose.Schema({
   odds: { type: Number, required: true },
   eventName: { type: String, required: false },
+  bettedTeam:{ type: String, required: false},
+  otherTeam: { type: String, required: false},
+  competitionName: { type: String, required: false},
+  matchSchedule: { type: String, required: false}
 });
 
 var userBetsSchema = new mongoose.Schema(
